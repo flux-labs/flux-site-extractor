@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Flux: Site Features</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.css">
+		<link rel="stylesheet" type="text/css" href="/style.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
+		<script src="./config.js"></script>
+		<script src="./flux-sdk.js"></script>
+		<script src="./flux-sdk-helpers.js"></script>
+		<script src="./index.js"></script>
+	</head>
+	<body>
+		<div class = "row" id="map"></div>
+		<!-- AIzaSyCXR50WNHDfa-7Jr7D1sII4MRqOO7CTwGA -->
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwwDkgSdbhyKBxSN9XCAWkF0b7Z-xCZ_8&libraries=drawing&callback=initMap&libraries=places" async defer></script>
+		<div id='container' class="ui container">
+			<div id='header'>
+				<h1>FLUX</h1>
+				<h2>Site Features</h2>
+			</div>
+			<div id="controls">
+				<div class="row" id="description">
+				  Send building outlines and roads to Flux.
+				</div>
+				<div class="row" id="login">
+					<button class="ui huge button">Log in to Flux</button>
+				</div>
+				<div class="row" id="projects">
+					<div class="ui huge selection dropdown" id="projectlist">
+					  <input type="hidden" name="project"></input>
+					  <i class="dropdown icon"></i>
+					  <div class="default text"></div>
+					  <div class="menu"></div>
+					</div>
+				</div>
+				<div class="row" id="search">
+					<div class="ui huge icon input">
+					  <i class="search icon"></i>
+					  <input type="text" id="search-box" placeholder="Search for a location...">
+					</div>
+				</div>
+				<div class="row" id="datatable">
+				  <div id="item-buildings" class="item">
+						<div class="ui toggle checked checkbox">
+						  <input type="checkbox" checked="" name="building"></input><label></label>
+						</div>
+					  <div class="ui huge input">
+						  <input type="text" value="Buildings"></input>
+						</div>
+				  </div>
+				  <div id="item-roads" class="item">
+						<div class="ui toggle checked checkbox">
+						  <input type="checkbox" checked="" name="building"></input><label></label>
+						</div>
+					  <div class="ui huge input">
+						  <input type="text" value="Roads"></input>
+						</div>
+				  </div>
+				  <div id="item-topography" class="item">
+						<div class="ui toggle checkbox">
+						  <input type="checkbox" name="building"></input><label></label>
+						</div>
+					  <div class="ui disabled huge input">
+						  <input type="text" value="Topography"></input>
+						</div>
+						<div class="info">Topography currently only available in the U.S.</div>
+				  </div>
+				</div>
+				<button class="ui button" id="export">send to flux</button>
+			</div>
+		</div>
+	</body>
+</html>
