@@ -3,11 +3,13 @@
 var path = require('path');
 var express = require('express')
 let xml = require('xml2js').parseString;
-var bodyParser = require('body-parser');
+let bodyParser = require('body-parser');
 var request = require('request');
 let parse = require('./parse');
 var app = express();
 
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 app.use(bodyParser.json());
 
 app.post('/geo', function (req, res, next) {
