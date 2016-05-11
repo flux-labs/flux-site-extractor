@@ -1,5 +1,4 @@
-var clientId = config.flux.id;
-var sdk = new FluxSdk(clientId, { redirectUri: config.flux.redirect });
+var sdk = new FluxSdk(config.flux.id, { redirectUri: config.flux.redirect });
 
 function getFluxLogin() {
   if (!window.location.hash.match(/access_token/)) {

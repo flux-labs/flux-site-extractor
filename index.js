@@ -6,6 +6,8 @@ let xml = require('xml2js').parseString;
 let bodyParser = require('body-parser');
 var request = require('request');
 let parse = require('./parse');
+var https = require('https');
+var http = require('http');
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -38,4 +40,13 @@ app.use(function(err, req, res, next) {
   res.render('error', { message: err.message, error: {} });
 });
 
-app.listen(3000);
+var httpsOptions = {
+  key: fs.readFileSync('./ssl/server.key'),
+  cert: fs.readFileSync('./ssl/server.crt'),
+  ca: fs.readFileSync('./ssl/ca.crt'),
+  requestCert: true,
+  rejectUnauthorized: false
+}
+
+http.createServer(app).listen(80);
+https.createServer(httpOptions, app).listen(443);

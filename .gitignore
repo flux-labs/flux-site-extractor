@@ -10,3 +10,4 @@ node_modules
 config*
 *.bak.*
 data
+ssl
