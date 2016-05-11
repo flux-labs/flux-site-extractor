@@ -5,7 +5,7 @@ let loading = false;
 let baseName = 'Site Features Project';
 let rectangle;
 
-loadGoogleMaps(config.gmap.key);
+loadGoogleMaps(config.gmap);
 setFluxLogin();
 
 function loadGoogleMaps(key) {

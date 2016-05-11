@@ -1,4 +1,4 @@
-var sdk = new FluxSdk(config.flux.id, { redirectUri: config.flux.redirect });
+var sdk = new FluxSdk(config.flux, { redirectUri: config.url });
 
 function getFluxLogin() {
   if (!window.location.hash.match(/access_token/)) {
@@ -10,7 +10,7 @@ function setFluxLogin() {
   if (!getFluxCredentials() && window.location.hash.match(/access_token/)) {
   sdk.exchangeCredentials(getState(), getNonce())
     .then(function(credentials) { setFluxCredentials(credentials); })
-    .then(function() { window.location.replace('http://localhost:3000'); });
+    .then(function() { window.location.replace(config.url); });
   }
 }
 
