@@ -31,7 +31,7 @@ function showLogin(err) {
   localStorage.removeItem('fluxCredentials');
   $('#login').show();
   $('#projects').hide();
-  $('#export').addClass('disabled');
+  $('#send').addClass('disabled').attr('data-content', 'Please log in');
   $('#login button').on('click', getFluxLogin);
 }
 
@@ -42,9 +42,11 @@ function getCoords(rectangle) {
 }
 
 function checkRectangle(rectangle) {
-  let limit = 0.012;
+  // let limit = 0.02;
+  let limit = 0.0004;
   let coords = getCoords(rectangle);
-  if (Math.abs(coords[3] - coords[1]) > limit || Math.abs(coords[2] - coords[0]) > limit) return false
+  // if (Math.abs(coords[3] - coords[1]) > limit || Math.abs(coords[2] - coords[0]) > limit) return false
+  if (Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0]) > limit) return false
   else return true
 }
 
@@ -68,7 +70,10 @@ function save() {
   checkLogin().then(function() {
     loading = true;
     let coords = getCoords(rectangle);
-    $('#export').addClass('loading');
+    var $send = $('#send');
+    $send.addClass('loading');
+    $send.attr('data-content', 'this might take up to a minute');
+    $send.popup('show');
     let save = {
       building: !$('#item-buildings .input').hasClass('disabled'),
       highway: !$('#item-roads .input').hasClass('disabled'),
@@ -79,7 +84,9 @@ function save() {
       features: {highway: save.highway, building: save.building, topography: save.topography}
     }
     $.ajax({ url: 'geo/', type: 'POST', contentType: 'application/json', data: JSON.stringify(options), success: function(data) {
-      $('#export').removeClass('loading');
+      $send.popup('hide');
+      $send.removeClass('loading');
+      $send.attr('data-content', '');
       loading = false;
       let pid = $('#projectlist .menu .item.selected').attr('data-id');
       if (pid === '0') {
@@ -111,7 +118,7 @@ function saveProject(data, pid, options) {
       }
     });
     for (var key in labels) {
-      if (options.features[key]) {
+      if (options.features[key] && data[key]) {
         if (update[key]) {
           let cell = createCell(pid, update[key].id);
           cell.update({value: data[key]});
@@ -120,7 +127,7 @@ function saveProject(data, pid, options) {
         }
       }
     }
-    var win = window.open('https://flux.io/p/' + pid + '/#!/data-view', '_blank');
+    var win = window.open(config.fluxUrl + '/p/' + pid + '/#!/data-view', '_blank');
     if (win) win.focus();
   });
 }
@@ -131,8 +138,11 @@ function initMap() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
       map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-      center.lat = position.coords.latitude;
-      center.lng = position.coords.longitude;
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      rectangle.setOptions({
+        bounds: { north: lat + offset, south: lat - offset, east: lng + offset, west: lng - offset }
+      });
     });
   }
   var rectangleBounds = { north: center.lat + offset, south: center.lat - offset, east: center.lng + offset, west: center.lng - offset };
@@ -183,11 +193,16 @@ function initMap() {
 }
 
 $(document).ready(function() {
+  var $send = $('#send');
   checkLogin().then(function(projects) {
     $('#login').hide();
+    $send.attr('data-content', '');
     fillProjects(projects);
-  }).catch(showLogin);
-  $('#export').click(save);
+    $send.click(save);
+  }).catch(function() {
+    showLogin();
+  });
+  $send.popup({ position : 'bottom center' });
   $('.ui.toggle').click(function() {
     if ($(this).hasClass('checked')) {
       $(this).removeClass('checked');

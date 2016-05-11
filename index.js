@@ -9,6 +9,7 @@ var request = require('request');
 let parse = require('./parse');
 var https = require('https');
 var http = require('http');
+var config = require('./public/config');
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -49,5 +50,5 @@ var httpsOptions = {
   rejectUnauthorized: false
 }
 
-http.createServer(app).listen(80);
-https.createServer(httpsOptions, app).listen(443);
+http.createServer(app).listen(config.port);
+https.createServer(httpsOptions, app).listen(config.portSSL);

@@ -34,7 +34,7 @@ function downloadRegion(region) {
   http.get(base, function(response) {
     if (response.statusCode !== 200) return console.log('Error downloading.');
     var data = '';
-    response.on("data", function(chunk) { data += chunk; });
+    response.on('data', function(chunk) { data += chunk; });
     response.on('end', function() {
       var $ = cheerio.load(data);
       $('li a').each(function(i, element){
@@ -50,7 +50,7 @@ function downloadRegion(region) {
       });
     })
   }).on('error', function(e) {
-    console.log("Got error: " + e.message);
+    console.log('Got error: ' + e.message);
   });
 }
 

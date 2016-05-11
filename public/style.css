@@ -161,7 +161,7 @@
   font-size: 2rem;
 }
 
-#export {
+#send {
   text-transform: uppercase;
 }
 
@@ -170,7 +170,7 @@
   height: 5rem;
 }
 
-#export.button {
+#send.button {
   width: 100%;
   font-size: 1.8rem;
   text-transform: uppercase;
@@ -179,9 +179,10 @@
   background: #f9f9f9;
   border: 0;
   transition: background 0.5s;
+  pointer-events: initial;
 }
 
-#export.button:hover {
+#send.button:hover {
   background: #f0f0f0;
 }
 
@@ -225,8 +226,11 @@
   width: 4rem;
 }
 
-.ui.toggle.checkbox input:checked~.box:before, .ui.toggle.checkbox input:checked~label:before {
-  background-color: #0fbfd6!important;
+#login {
+  display: none;
+}
+#datatable .item .ui.toggle.checkbox input:checked ~ .box:before, #datatable .item .ui.toggle.checkbox input:checked ~ label:before {
+  background-color: #0fbfd6 !important;
 }
 
 .ui.toggle.checkbox .box:after, .ui.toggle.checkbox label:after {
@@ -261,3 +265,9 @@
 .ui.dropdown .menu .active.item {
   font-weight: 600;
 }
+
+.ui.popup, .ui.popup:before {
+/*  background-color: #0fbfd6 !important;
+  font-weight: 500;
+  color: #fff;
+*/}
