@@ -1,12 +1,18 @@
+var fs = require('fs');
 var cheerio = require('cheerio');
 var http = require('http');
 var unzip = require('unzip');
 var ct = 0;
 var limit = 5;
 var queue = [];
+var idx = 0;
+var total = 0;
 
 function runQueue(url) {
-  if (url) queue.push(url);
+  if (url) {
+    total++;
+    queue.push(url);
+  }
   if (ct < limit && queue.length > 0) {
     ct++;
     download(queue.pop());
@@ -14,7 +20,8 @@ function runQueue(url) {
 }
 
 function download(url) {
-  console.log('downloading', url);
+  idx++;
+  console.log('downloading', '(' + idx + '/' + total + ')', url);
   http.get(url, function(res) {
     var extracted = unzip.Extract({path: './data'})
     extracted.on('finish', function() { ct--; runQueue() });
@@ -35,8 +42,11 @@ function downloadRegion(region) {
         var split = fullname.split('.');
         var isZip = (split[split.length-1] === 'zip');
         var name = split.slice(0, split.length-1).join('.');
-        // console.log('isZip', isZip, i < 5, region === 1)
-        if (isZip) runQueue(base + fullname);
+        try {
+          fs.statSync('./data/' + name);
+        } catch(e) {
+          if (isZip) runQueue(base + fullname);
+        }
       });
     })
   }).on('error', function(e) {
@@ -44,4 +54,4 @@ function downloadRegion(region) {
   });
 }
 
-// for (var i = 1; i < 7; i++) { downloadRegion(i); }
+for (var i = 1; i <= 7; i++) { downloadRegion(i); }
