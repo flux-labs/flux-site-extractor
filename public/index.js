@@ -65,9 +65,18 @@ function fillProjects(projects) {
   $('#projectlist').change(hideOpenLink);
 }
 
+function checkInputs() {
+  return (
+    $('#item-buildings input[type="text"]').val() !== "" &&
+    $('#item-roads input[type="text"]').val() !== "" &&
+    $('#item-topography input[type="text"]').val() !== ""
+  )
+}
+
 function save() {
-  if (loading) return onError('Please wait')
-  if (!checkRectangle(rectangle)) return onError('Please make a smaller rectangle')
+  if (loading) return onError('Please wait');
+  if (!checkInputs()) return onError('Please fill out the key names');
+  if (!checkRectangle(rectangle)) return onError('Please make a smaller rectangle');
   checkLogin().then(function() {
     loading = true;
     let coords = getCoords(rectangle);
