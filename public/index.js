@@ -62,6 +62,7 @@ function fillProjects(projects) {
   }
   $('#projectlist .menu').attr("size", projects.entities.length+1);
   $('#projectlist').dropdown('set selected', baseName);
+  $('#projectlist').change(hideOpenLink);
 }
 
 function save() {
@@ -136,6 +137,10 @@ function showOpenLink(url) {
     var win = window.open(url);
     if (win) win.focus();
   });
+}
+
+function hideOpenLink() {
+  $('#open').fadeOut(0.25).off();
 }
 
 function initMap() {
