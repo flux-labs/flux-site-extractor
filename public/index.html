@@ -17,11 +17,12 @@
 		<div id='container' class="ui container">
 			<div id='header'>
 				<h1>FLUX</h1>
-				<h2>Site Features</h2>
+				<!-- <h2>Site Context Grabber</h2> -->
+				<h2>Site Extractor</h2>
 			</div>
 			<div id="controls">
 				<div class="row" id="description">
-				  Send building outlines and roads to Flux.
+				  Capture site features to use in your workflow.
 				</div>
 				<div class="row" id="search">
 					<div class="ui huge icon input">
@@ -35,7 +36,7 @@
 						  <input type="checkbox" checked="" name="building"></input><label></label>
 						</div>
 					  <div class="ui huge input">
-						  <input type="text" value="Buildings"></input>
+						  <input type="text" value="Buildings" placeholder="Key: Buildings"></input>
 						</div>
 				  </div>
 				  <div id="item-roads" class="item">
@@ -43,7 +44,7 @@
 						  <input type="checkbox" checked="" name="building"></input><label></label>
 						</div>
 					  <div class="ui huge input">
-						  <input type="text" value="Roads"></input>
+						  <input type="text" value="Roads" placeholder="Key: Roads"></input>
 						</div>
 				  </div>
 				  <div id="item-topography" class="item">
@@ -51,7 +52,7 @@
 						  <input type="checkbox" name="building"></input><label></label>
 						</div>
 					  <div class="ui disabled huge input">
-						  <input type="text" value="Topography"></input>
+						  <input type="text" value="Topography" placeholder="Key: Topography"></input>
 						</div>
 						<div class="info">Topography currently only available in the U.S.</div>
 				  </div>
