@@ -70,7 +70,8 @@ function getOSM(data, features, topo) {
     }
     for (var i = 0; i < res; i++) {
       for (var j = 0; j < res; j++) {
-        faces.push([i + (res + 1) * j, i + (res + 1) * (j + 1), (i + 1) + (res + 1) * (j + 1), (i + 1) + (res + 1) * j]);
+        // faces.push([i + (res + 1) * j, i + (res + 1) * (j + 1), (i + 1) + (res + 1) * (j + 1), (i + 1) + (res + 1) * j]);
+        faces.push([(i + 1) + (res + 1) * j,  (i + 1) + (res + 1) * (j + 1), i + (res + 1) * (j + 1), i + (res + 1) * j ]);
       }
     }
     out.topography = {primitive: 'mesh', faces: faces, vertices: verts, attributes: { materialProperties: { color: '#ffffff', opacity: 0.6 }}}

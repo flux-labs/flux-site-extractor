@@ -43,11 +43,9 @@ app.use(function(err, req, res, next) {
 });
 
 var httpsOptions = {
-  key: fs.readFileSync('./ssl/server.key'),
-  cert: fs.readFileSync('./ssl/server.crt'),
-  ca: fs.readFileSync('./ssl/ca.crt'),
-  requestCert: true,
-  rejectUnauthorized: false
+  key: fs.readFileSync('/etc/letsencrypt/live/extractor.flux.kitchen/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/extractor.flux.kitchen/fullchain.pem'),
+  ca: fs.readFileSync('/etc/letsencrypt/live/extractor.flux.kitchen/chain.pem')
 }
 
 http.createServer(app).listen(config.port);

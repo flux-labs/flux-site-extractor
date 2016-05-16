@@ -127,7 +127,13 @@ function saveProject(data, pid, options) {
         }
       }
     }
-    var win = window.open(config.fluxUrl + '/p/' + pid + '/#!/data-view', '_blank');
+    showOpenLink(config.fluxUrl + '/p/' + pid + '/#!/data-view', '_blank');
+  });
+}
+
+function showOpenLink(url) {
+  $('#open').fadeIn(0.25).on('click', function() {
+    var win = window.open(url);
     if (win) win.focus();
   });
 }

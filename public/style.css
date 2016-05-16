@@ -1,7 +1,3 @@
-* {
-  font-family: 'Open Sans';
-}
-
 @font-face {
   font-family: 'Open Sans';
   font-weight: 700;
@@ -32,6 +28,11 @@
   src: url(./fonts/thin.woff2) format('woff2');
 }
 
+html {
+  font-family: 'Open Sans';
+  font-size: 14px;
+}
+
 #container.ui.container {
   border-radius: 4px;
   box-shadow: 0 1px 8px 1px #bbb;
@@ -40,6 +41,7 @@
   right: 10px;
   top: 10px;
   background: white;
+  transition: height 0.5s;
 }
 
 #header {
@@ -112,8 +114,9 @@
 }
 
 #projects.row {
-  padding: 2rem 2rem 0;
-  height: 6rem;
+  padding: 2rem 2rem;
+  /*height: 8rem;*/
+  display: inline-block;
 }
 
 #search-box {
@@ -201,7 +204,7 @@
 }
 
 #login {
-  padding: 2rem 2rem 0;
+  padding: 2rem;
   border-bottom: 0;
 }
 
@@ -271,3 +274,13 @@
   font-weight: 500;
   color: #fff;
 */}
+
+#open {
+  display: none;
+  /*text-transform: uppercase;*/
+  margin: 0.5rem 0 0rem;
+  cursor: pointer;
+  /*width: 100%;*/
+  float: right;
+  color: #0fbfd6;
+}
