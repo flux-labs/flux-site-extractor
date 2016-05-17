@@ -65,7 +65,7 @@ function getOSM(data, features, topo) {
         let lat = (ny * latDomain) + bounds.latMin;
         let lng = (nx * lngDomain) + bounds.lngMin;
         let z = topo.getElevation([lat, lng]);
-        if (z < -5000) z = -100;
+        if (z < -1000) z = -100;
         elevations.push(z);
         verts.push([nx * xDomain, ny * yDomain, z]);
       }
@@ -107,8 +107,9 @@ function getOSM(data, features, topo) {
           let lng = nodes[nid].lng;
           let cLat = lat < y0 ? y0 : lat > y1 ? y1 : lat;
           let cLng = lng < x0 ? x0 : lng > x1 ? x1 : lng;
-          let z = topo.getElevation([cLat, cLng]) - lowest;
-          if (z < -5000) z = -100;
+          let z = topo.getElevation([cLat, cLng]);
+          if (z < -1000) z = -100;
+          z -= lowest;
           way.points.push([nodes[nid].x, nodes[nid].y, z]);
         }
       } else {
