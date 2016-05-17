@@ -311,3 +311,8 @@ html {
   float: right;
   color: #0fbfd6;
 }
+
+.error .popup {
+  background: #ff0000;
+  color: #ffffff;
+}

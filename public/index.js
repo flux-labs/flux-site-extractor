@@ -2,7 +2,7 @@
 
 var offset = 0.005;
 let loading = false;
-let baseName = 'Site Features Project';
+let baseName = 'Site Project';
 let rectangle;
 
 loadGoogleMaps(config.gmap);
@@ -17,7 +17,26 @@ function loadGoogleMaps(key) {
 }
 
 function onError(error) {
-  console.log('error', error);
+  var $send = $('#send');
+  $send.attr('data-content', error).popup('show');
+}
+
+function checkErrors() {
+  if (!checkInputs()) return 'Please fill out the key names';
+  if (!checkRectangle(rectangle)) return 'Please make a smaller rectangle';
+  return false;
+}
+
+function onHoverSend() {
+  var error = checkErrors();
+  if (error) {
+    $('#send').addClass('disabled')
+      .attr('data-content', error)
+      // .popup({position: 'bottom center'}).popup('show');
+      .popup('show');
+  } else {
+    $('#send').removeClass('disabled').attr('data-content', '');
+  }
 }
 
 function checkLogin() {
@@ -66,6 +85,12 @@ function fillProjects(projects) {
 }
 
 function checkInputs() {
+  console.log('inputs', $('#item-buildings input[type="text"]').val(), $('#item-roads input[type="text"]').val(), $('#item-topography input[type="text"]').val());
+  console.log(
+    $('#item-buildings input[type="text"]').val() !== "" &&
+    $('#item-roads input[type="text"]').val() !== "" &&
+    $('#item-topography input[type="text"]').val() !== ""
+  )
   return (
     $('#item-buildings input[type="text"]').val() !== "" &&
     $('#item-roads input[type="text"]').val() !== "" &&
@@ -75,15 +100,19 @@ function checkInputs() {
 
 function save() {
   if (loading) return onError('Please wait');
-  if (!checkInputs()) return onError('Please fill out the key names');
-  if (!checkRectangle(rectangle)) return onError('Please make a smaller rectangle');
+  // if (!checkInputs()) return onError('Please fill out the key names');
+  // if (!checkRectangle(rectangle)) return onError('Please make a smaller rectangle');
+  var error = checkErrors();
+  // console.log('has error?', error)
+  if (error) return onError(error);
   checkLogin().then(function() {
     loading = true;
+    hideOpenLink();
     let coords = getCoords(rectangle);
     var $send = $('#send');
-    $send.addClass('loading');
-    $send.attr('data-content', 'this might take up to a minute');
-    $send.popup('show');
+    $send.addClass('loading')
+         .attr('data-content', 'this might take up to a minute')
+         .popup('show');
     let save = {
       building: !$('#item-buildings .input').hasClass('disabled'),
       highway: !$('#item-roads .input').hasClass('disabled'),
@@ -94,9 +123,9 @@ function save() {
       features: {highway: save.highway, building: save.building, topography: save.topography}
     }
     $.ajax({ url: 'geo/', type: 'POST', contentType: 'application/json', data: JSON.stringify(options), success: function(data) {
-      $send.popup('hide');
-      $send.removeClass('loading');
-      $send.attr('data-content', '');
+      $send.popup('hide')
+           .removeClass('loading')
+           .attr('data-content', '');
       loading = false;
       let pid = $('#projectlist .menu .item.selected').attr('data-id');
       if (pid === '0') {
@@ -214,15 +243,12 @@ function initMap() {
 
 $(document).ready(function() {
   var $send = $('#send');
+  $send.on('mouseover', onHoverSend).popup({ position : 'bottom center' });
   checkLogin().then(function(projects) {
     $('#login').hide();
-    $send.attr('data-content', '');
+    $send.attr('data-content', '').click(save);
     fillProjects(projects);
-    $send.click(save);
-  }).catch(function() {
-    showLogin();
-  });
-  $send.popup({ position : 'bottom center' });
+  }).catch(showLogin);
   $('.ui.toggle').click(function() {
     if ($(this).hasClass('checked')) {
       $(this).removeClass('checked');
