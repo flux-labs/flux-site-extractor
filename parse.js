@@ -44,6 +44,13 @@ function getOSM(data, features, topo) {
   var xDomain = measure(bounds.latMin, bounds.lngMin, bounds.latMin, bounds.lngMax);
   var yDomain = measure(bounds.latMin, bounds.lngMin, bounds.latMax, bounds.lngMin);
 
+  var x0, x1, y0, y1;
+  if (bounds.latMin < bounds.latMax) y0 = Math.floor(bounds.latMin), y1 = Math.ceil(bounds.latMax);
+  else y0 = Math.floor(bounds.latMax), y1 = Math.ceil(bounds.latMin);
+  if (bounds.lngMin < bounds.lngMax) x0 = Math.floor(bounds.lngMin), x1 = Math.ceil(bounds.lngMax);
+  else x0 = Math.floor(bounds.lngMax), x1 = Math.ceil(bounds.lngMin);
+  console.log('bounds', bounds);
+
   //** TOPOGRAPHY
   var latDomain = bounds.latMax - bounds.latMin;
   var lngDomain = bounds.lngMax - bounds.lngMin;
@@ -59,7 +66,7 @@ function getOSM(data, features, topo) {
         var lat = (ny * latDomain) + bounds.latMin;
         var lng = (nx * lngDomain) + bounds.lngMin;
         var z = topo.getElevation([lat, lng]);
-        elevations.push(topo.getElevation([lat, lng]));
+        elevations.push(z);
         verts.push([nx * xDomain, ny * yDomain, z]);
       }
     }
@@ -97,7 +104,12 @@ function getOSM(data, features, topo) {
       if (features.topography) {
         for (let j = 0, jl = dataWay.nd.length; j < jl; j++) {
           let nid = dataWay.nd[j].$.ref;
-          way.points.push([nodes[nid].x, nodes[nid].y, topo.getElevation([nodes[nid].lat, nodes[nid].lng]) - lowest]);
+          if (nodes[nid].lat > y0 && nodes[nid].lat < y1 && nodes[nid].lng > x0 && nodes[nid].lng < x1) {
+            way.points.push([nodes[nid].x, nodes[nid].y, topo.getElevation([nodes[nid].lat, nodes[nid].lng]) - lowest]);
+          } else {
+            console.log('out of bounds', nodes[nid].lat, nodes[nid].lng)
+            way.points.push([nodes[nid].x, nodes[nid].y, 0]);
+          }
         }
       } else {
         for (let j = 0, jl = dataWay.nd.length; j < jl; j++) {
@@ -138,6 +150,7 @@ module.exports = function(data, features, cb) {
   var swKey = makeKey(bounds.latMin, bounds.lngMin);
   var neKey = makeKey(bounds.latMax, bounds.lngMax);
   if (features.topography && hasFile(swKey) && (swKey === neKey || !hasFile(neKey))) {
+    console.log('coords', bounds.latMin, bounds.lngMin, bounds.latMax, bounds.lngMax);
     var topo = new SyncTileSet('./data/', [bounds.latMin, bounds.lngMin], [bounds.latMax, bounds.lngMax], function(err) {
       if (err) {
         console.log('error with topography')
