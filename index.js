@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 function tryUrl(i, req, res, next) {
   let coords = req.body.coordinates;
   if (!urls[i]) next(new Error('Could not reach data'))
-  request({method: 'GET', timeout: 10000, url: urls[i] + '*[bbox=' + coords + ']'}, function(error, response, data) {
+  request({method: 'GET', timeout: 15000, url: urls[i] + '*[bbox=' + coords + ']'}, function(error, response, data) {
     if (error) {
       if (error.message === 'ETIMEDOUT') return tryUrl(++i, req, res, next);
       else return next(new Error('Could not reach data'));

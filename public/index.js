@@ -61,10 +61,8 @@ function getCoords(rectangle) {
 }
 
 function checkRectangle(rectangle) {
-  // let limit = 0.02;
-  let limit = 0.0004;
+  let limit = 0.0003;
   let coords = getCoords(rectangle);
-  // if (Math.abs(coords[3] - coords[1]) > limit || Math.abs(coords[2] - coords[0]) > limit) return false
   if (Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0]) > limit) return false
   else return true
 }
