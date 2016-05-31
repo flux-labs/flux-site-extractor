@@ -12,6 +12,6 @@ Capture site features to use in your workflow.
 
 ### Screenshots
 
-![Web UI](/docs/web.png?raw=true "Flux: Site Extractor")
+![Web UI](/docs/web.PNG?raw=true "Flux: Site Extractor")
 
-![Flux UI](/docs/flux.png?raw=true "Flux data")
+![Flux UI](/docs/flux.PNG?raw=true "Flux data")
