@@ -38,7 +38,6 @@ function tryUrl(i, req, res, next) {
       });
     });
   });
-
 }
 
 app.post('/geo', function (req, res, next) {
@@ -57,9 +56,9 @@ app.use(function(err, req, res, next) {
 });
 
 var httpsOptions = {
-  key: fs.readFileSync('/etc/letsencrypt/live/extractor.flux.kitchen/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/extractor.flux.kitchen/fullchain.pem'),
-  ca: fs.readFileSync('/etc/letsencrypt/live/extractor.flux.kitchen/chain.pem')
+  key: fs.readFileSync(config.sslKey),
+  cert: fs.readFileSync(config.sslCert),
+  ca: fs.readFileSync(config.sslCA)
 }
 
 http.createServer(app).listen(config.port);

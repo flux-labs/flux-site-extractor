@@ -1,7 +1,7 @@
 {
-  "name": "geo",
+  "name": "flux-site-extractor",
   "version": "1.0.0",
-  "description": "",
+  "description": "Capture site features to use in your workflow.",
   "main": "index.js",
   "scripts": {},
   "author": "Javier Vizoso (javier@flux.io)",

@@ -3,6 +3,7 @@
 let fs = require('fs');
 let highways = {motorway: 5, trunk: 4, primary: 3, secondary: 2, tertiary: 1, other: 0} 
 let SyncTileSet = require('node-hgt').SyncTileSet;
+var config = require('./public/config');
 
 // http://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters
 function measure(lat1, lng1, lat2, lng2) {
@@ -150,7 +151,7 @@ module.exports = function(data, features, cb) {
   var bounds = data.bounds;
   var swKey = makeKey(bounds.latMin, bounds.lngMin);
   var neKey = makeKey(bounds.latMax, bounds.lngMax);
-  if (features.topography && hasFile(swKey) && (swKey === neKey || !hasFile(neKey))) {
+  if (features.topography && (config.downloadTiles || hasFile(swKey) && (swKey === neKey || !hasFile(neKey)))) {
     var topo = new SyncTileSet('./data/', [bounds.latMin, bounds.lngMin], [bounds.latMax, bounds.lngMax], function(err) {
       if (err) {
         features.topography = false;
