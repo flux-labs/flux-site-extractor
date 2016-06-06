@@ -141,7 +141,7 @@ function getOSM(data, features, topo) {
               let value = dataWay.tag[j].$.v.split('_')[0];
               way.attributes = { 
                 type: highways[value] || 0, 
-                materialProperties: { color: '#0000ff', linewidth: 1 }
+                materialProperties: { color: '#0000ff', linewidth: 1 },
                 latitude: bounds.latMin,
                 longitude: bounds.lngMin
               }
@@ -149,7 +149,7 @@ function getOSM(data, features, topo) {
               break;
             case 'building':
               way.attributes = { 
-                materialProperties: { color: '#ff0000', linewidth: 2 }
+                materialProperties: { color: '#ff0000', linewidth: 2 },
                 latitude: bounds.latMin,
                 longitude: bounds.lngMin
               }
@@ -157,7 +157,7 @@ function getOSM(data, features, topo) {
               break;
             default:
               way.attributes = { 
-                materialProperties: { color: '#00ff00', linewidth: 1 }
+                materialProperties: { color: '#00ff00', linewidth: 1 },
                 latitude: bounds.latMin,
                 longitude: bounds.lngMin
               }
