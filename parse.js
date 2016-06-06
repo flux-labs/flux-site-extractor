@@ -81,7 +81,7 @@ function getOSM(data, features, topo) {
         faces.push([(i + 1) + (res + 1) * j,  (i + 1) + (res + 1) * (j + 1), i + (res + 1) * (j + 1), i + (res + 1) * j ]);
       }
     }
-    out.topography = {primitive: 'mesh', faces: faces, vertices: verts, attributes: { materialProperties: { color: '#ffffff', opacity: 0.6 }}}
+    out.topography = {primitive: 'mesh', faces: faces, vertices: verts, units: { vertices: 'meters' }, attributes: { materialProperties: { color: '#ffffff', opacity: 0.6 }}}
   }
 
   //** NODES
@@ -99,7 +99,7 @@ function getOSM(data, features, topo) {
   for (let i = 0; i < dataWays.length; i++) {
     let dataWay = dataWays[i];
     let id = dataWay.$.id;
-    let way = { primitive: 'polyline', points: [] };
+    let way = { primitive: 'polyline', points: [], units: { points: 'meters' } };
     if (dataWay.nd) {
       if (features.topography) {
         for (let j = 0, jl = dataWay.nd.length; j < jl; j++) {
