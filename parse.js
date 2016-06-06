@@ -81,7 +81,18 @@ function getOSM(data, features, topo) {
         faces.push([(i + 1) + (res + 1) * j,  (i + 1) + (res + 1) * (j + 1), i + (res + 1) * (j + 1), i + (res + 1) * j ]);
       }
     }
-    out.topography = {primitive: 'mesh', faces: faces, vertices: verts, units: { vertices: 'meters' }, attributes: { materialProperties: { color: '#ffffff', opacity: 0.6 }}}
+    out.topography = {
+      primitive: 'mesh', 
+      faces: faces, 
+      vertices: verts, 
+      units: { vertices: 'meters' }, 
+      attributes: { 
+        materialProperties: { color: '#ffffff', opacity: 0.6 },
+        elevation: lowest,
+        latitude: bounds.latMin,
+        longitude: bounds.lngMin
+      }
+    }
   }
 
   //** NODES
@@ -128,15 +139,28 @@ function getOSM(data, features, topo) {
           switch (tag) {
             case 'highway':
               let value = dataWay.tag[j].$.v.split('_')[0];
-              way.attributes = { type: highways[value] || 0, materialProperties: { color: '#0000ff', linewidth: 1 }}
+              way.attributes = { 
+                type: highways[value] || 0, 
+                materialProperties: { color: '#0000ff', linewidth: 1 }
+                latitude: bounds.latMin,
+                longitude: bounds.lngMin
+              }
               out.highway.push(way);
               break;
             case 'building':
-              way.attributes = { materialProperties: { color: '#ff0000', linewidth: 2 }}
+              way.attributes = { 
+                materialProperties: { color: '#ff0000', linewidth: 2 }
+                latitude: bounds.latMin,
+                longitude: bounds.lngMin
+              }
               out[tag].push(way);
               break;
             default:
-              way.attributes = { materialProperties: { color: '#00ff00', linewidth: 1 }}
+              way.attributes = { 
+                materialProperties: { color: '#00ff00', linewidth: 1 }
+                latitude: bounds.latMin,
+                longitude: bounds.lngMin
+              }
               out[tag].push(way);
               break;
           }
