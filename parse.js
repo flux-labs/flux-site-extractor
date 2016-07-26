@@ -2,9 +2,7 @@
 
 let fs = require('fs');
 let highways = {motorway: 5, trunk: 4, primary: 3, secondary: 2, tertiary: 1, residential: 1, footway: 0, other: 0, service: 0, path: 0, steps: 0} 
-let SyncTileSet = require('node-hgt').SyncTileSet;
 var config = require('./public/config');
-// let trim = require('./trim')
 let earcut = require('earcut')
 let Tile = require('./tile')
 
