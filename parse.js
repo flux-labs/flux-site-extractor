@@ -56,8 +56,8 @@ function getOSM(data, options, topo) {
   //** TOPOGRAPHY
   var latDomain = bounds.latMax - bounds.latMin;
   var lngDomain = bounds.lngMax - bounds.lngMin;
-  if (features.topography) out.topography = topo.mesh(xDomain, yDomain)
-  if (features.contours) out.contours = topo.contours(xDomain, yDomain, options.contour_interval)
+  if (features.topography && topo) out.topography = topo.mesh(xDomain, yDomain)
+  if (features.contours && topo) out.contours = topo.contours(xDomain, yDomain, options.contour_interval)
 
   //** NODES
   let dataNodes = data.osm.node;
@@ -256,8 +256,7 @@ module.exports = function(data, options, cb) {
   var bounds = data.bounds;
   var swKey = makeKey(bounds.latMin, bounds.lngMin);
   var neKey = makeKey(bounds.latMax, bounds.lngMax);
-  if (features.topography && (config.downloadTiles || hasFile(swKey) && (swKey === neKey || !hasFile(neKey)))) {
-    // var topo = new Tile({resolution: options.high_res, latMin: bounds.latMin, latMax: bounds.latMax, lonMin: bounds.lngMin, lonMax: bounds.lngMax})
+  if (features.topography) {
     var topo = new Tile({resolution: true, latMin: bounds.latMin, latMax: bounds.latMax, lonMin: bounds.lngMin, lonMax: bounds.lngMax})
     var osm = getOSM(data, options, topo);
     if (osm) return cb(false, osm);
