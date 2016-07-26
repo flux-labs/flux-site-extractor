@@ -49,7 +49,9 @@ class Tile {
 
     latDomain.map((lat) => {
       lonDomain.map((lon) => {
-        let name = `n${Math.abs(c(lat.latMin))}w${Math.abs(f(lon.lonMin))}`
+        let lonText = Math.abs(f(lon.lonMin)) + ''
+        if (lonText.length === 2) lonText = '0' + lonText
+        let name = `n${Math.abs(c(lat.latMin))}w${}`
         let filename = `./tiles/high/${name}.img`
         let file = gdal.open(filename)
         let fileband = file.bands.get(1)
