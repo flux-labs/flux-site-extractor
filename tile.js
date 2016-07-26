@@ -40,7 +40,7 @@ class Tile {
       lonDomain.push({lonOffset: 0, lonMin: lonMin, lonMax: rounded.lonMax, lonDomain: rounded.lonMax - lonMin, min: true, max: false})
       lonDomain.push({lonOffset: rounded.lonMax - lonMin, lonMin: rounded.lonMax, lonMax: lonMax, lonDomain: lonMax - rounded.lonMax, min: false, max: true})
     }
-    
+
     let size = 10812
     this.latSize = f(size * this.latDomain)
     this.lonSize = f(size * this.lonDomain)
@@ -50,7 +50,7 @@ class Tile {
     latDomain.map((lat) => {
       lonDomain.map((lon) => {
         let name = `n${Math.abs(c(lat.latMin))}w${Math.abs(f(lon.lonMin))}`
-        let filename = `./tiles/${name}.img`
+        let filename = `./tiles/high/${name}.img`
         let file = gdal.open(filename)
         let fileband = file.bands.get(1)
         let gt = file.geoTransform
