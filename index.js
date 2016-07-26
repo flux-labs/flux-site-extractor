@@ -32,7 +32,7 @@ function tryUrl(i, req, res, next) {
     if (response.statusCode !== 200) return next(new Error('Error downloading data'));
     xml(data, function(error, result) {
       result.bounds = { latMin: coords[1], latMax: coords[3], lngMin: coords[0], lngMax: coords[2] }
-      parse(result, req.body.features, (error, analyzed) => {
+      parse(result, req.body, (error, analyzed) => {
         if (error) next(new Error('Error analyzing data'));
         res.json(analyzed);
       });

@@ -90,7 +90,7 @@ html {
 }
 
 .row {
-  /*border-bottom: 1px solid #e8e8e8;*/
+  overflow: hidden;
   width: 100%;
 }
 
@@ -126,24 +126,6 @@ html {
   font-size: 1.5rem;
 }
 
-/*#search-box::-webkit-input-placeholder {
-  color: #ccc;
-}
-
-#search-box:-moz-placeholder {
-  color: #ccc;
-  opacity:  1;
-}
-
-#search-box::-moz-placeholder {
-  color: #ccc;
-  opacity:  1;
-}
-
-#search-box:-ms-input-placeholder {
-  color: #ccc;
-}
-*/
 :focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #ccc !important;
 }
@@ -174,6 +156,19 @@ html {
   border-bottom: 1px solid #e8e8e8;
   padding: 3rem 2rem 2rem;
 }
+#datatable .column {
+  width: 50%;
+  float: left;
+  padding: 6px;
+}
+
+#datatable .column .button {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 12px;
+  opacity: 0.7;
+  font-size: 1.2rem;
+}
 
 #header h1, #header h2 {
   font-weight: 600;
@@ -197,7 +192,13 @@ html {
 
 .item {
   width: 100%;
-  height: 5rem;
+  /*height: 2.5rem;*/
+  padding: 0.6rem 0;
+}
+
+.items {
+  display: flex;
+  flex-direction: row;
 }
 
 #send.button {
@@ -214,11 +215,6 @@ html {
 
 #send.button:hover {
   background: #f0f0f0;
-}
-
-.item .ui.toggle {
-   float: left;
-  margin-top: 10px;
 }
 
 .item h4 {
@@ -242,23 +238,15 @@ html {
   color: white;
 }
 
-.ui.toggle.checkbox {
-  float: left;
-  width: 25%;
-}
-
 .ui.huge.input {
   float: right;
   width: 75%;
 }
 
-.ui.toggle.checkbox label {
-  width: 4rem;
-}
-
 #login {
   display: none;
 }
+
 #datatable .item .ui.toggle.checkbox input:checked ~ .box:before, #datatable .item .ui.toggle.checkbox input:checked ~ label:before {
   background-color: #0fbfd6 !important;
 }
@@ -296,18 +284,10 @@ html {
   font-weight: 600;
 }
 
-.ui.popup, .ui.popup:before {
-/*  background-color: #0fbfd6 !important;
-  font-weight: 500;
-  color: #fff;
-*/}
-
 #open {
   display: none;
-  /*text-transform: uppercase;*/
   margin: 0.5rem 0 0rem;
   cursor: pointer;
-  /*width: 100%;*/
   float: right;
   color: #0fbfd6;
 }
@@ -315,4 +295,17 @@ html {
 .error .popup {
   background: #ff0000;
   color: #ffffff;
+}
+
+#random-min, #random-max, #contour-interval {
+  width: 2em;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.disclaimer {
+  color: #aaa;
+  font-style: italic;
+  margin-left: 2em;
 }

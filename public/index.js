@@ -22,7 +22,6 @@ function onError(error) {
 }
 
 function checkErrors() {
-  if (!checkInputs()) return 'Please fill out the key names';
   if (!checkRectangle(rectangle)) return 'Please make a smaller rectangle';
   return false;
 }
@@ -82,44 +81,46 @@ function fillProjects(projects) {
   $('#projectlist').change(hideOpenLink);
 }
 
-function checkInputs() {
-  console.log('inputs', $('#item-buildings input[type="text"]').val(), $('#item-roads input[type="text"]').val(), $('#item-topography input[type="text"]').val());
-  console.log(
-    $('#item-buildings input[type="text"]').val() !== "" &&
-    $('#item-roads input[type="text"]').val() !== "" &&
-    $('#item-topography input[type="text"]').val() !== ""
-  )
-  return (
-    $('#item-buildings input[type="text"]').val() !== "" &&
-    $('#item-roads input[type="text"]').val() !== "" &&
-    $('#item-topography input[type="text"]').val() !== ""
-  )
-}
-
 function save() {
   if (loading) return onError('Please wait');
-  // if (!checkInputs()) return onError('Please fill out the key names');
-  // if (!checkRectangle(rectangle)) return onError('Please make a smaller rectangle');
   var error = checkErrors();
-  // console.log('has error?', error)
   if (error) return onError(error);
   checkLogin().then(function() {
     loading = true;
     hideOpenLink();
-    let coords = getCoords(rectangle);
+    var coords = getCoords(rectangle);
     var $send = $('#send');
     $send.addClass('loading')
          .attr('data-content', 'this might take up to a minute')
          .popup('show');
-    let save = {
-      building: !$('#item-buildings .input').hasClass('disabled'),
-      highway: !$('#item-roads .input').hasClass('disabled'),
-      topography: !$('#item-topography .input').hasClass('disabled')
+    var other = $('#toggle-other').hasClass('checked')
+    var save = {
+      building: $('#toggle-buildings').hasClass('checked'),
+      building_3d: $('#toggle-buildings-3d').hasClass('checked'),
+      building_3d_random: $('#toggle-buildings-3d-random').hasClass('checked'),
+      highway: other,
+      parks: other,
+      water: other,
+      topography: $('#toggle-topography').hasClass('checked'),
+      contours: $('#toggle-contours').hasClass('checked'),
     }
-    let options = {
+    var options = {
       coordinates: coords,
-      features: {highway: save.highway, building: save.building, topography: save.topography}
+      features: {
+        highway: save.highway, 
+        building: save.building, 
+        building_3d: save.building_3d, 
+        building_3d_random: save.building_3d_random,
+        topography: save.topography, 
+        contours: save.contours, 
+        waterway: save.water, 
+        leisure: save.parks, 
+      },
     }
+    options.contour_interval = parseInt($('#contour-interval').val())
+    options.random_min = parseFloat($('#random-min').val())
+    options.random_max = parseFloat($('#random-max').val())
+    options.high_res = $('#toggle-resolution').hasClass('checked')
     $.ajax({ url: 'geo/', type: 'POST', contentType: 'application/json', data: JSON.stringify(options), success: function(data) {
       $send.popup('hide')
            .removeClass('loading')
@@ -140,9 +141,15 @@ function save() {
 
 function saveProject(data, pid, options) {
   let labels = {
-    building: $('#item-buildings input[type="text"]').val(),
-    highway: $('#item-roads input[type="text"]').val(),
-    topography: $('#item-topography input[type="text"]').val()
+    contours: 'Topography Lines',
+    building: 'Building Profiles',
+    building_3d: 'Buildings',
+    building_3d_random: 'Random Buildings',
+    highway: 'Roads',
+    topography: 'Topography Mesh',
+    leisure: 'Parks',
+    waterway: 'Water',
+    boundary: 'Boundaries'
   }
   var user = getUser();
   var project = user.getProject(pid);
@@ -244,10 +251,16 @@ $(document).ready(function() {
   $send.on('mouseover', onHoverSend).popup({ position : 'bottom center' });
   checkLogin().then(function(projects) {
     $('#login').hide();
+    $('.ui.accordion').accordion()
     $send.attr('data-content', '').click(save);
     fillProjects(projects);
   }).catch(showLogin);
-  $('.ui.toggle').click(function() {
+  $('#random-min, #random-max, #contour-interval').click(function(e) {
+    e.stopPropagation()
+
+  });
+  $('.ui.checkbox').checkbox('set checked')
+  $('.ui.checkbox').click(function() {
     if ($(this).hasClass('checked')) {
       $(this).removeClass('checked');
       $($(this).parent().children()[1]).addClass('disabled');
