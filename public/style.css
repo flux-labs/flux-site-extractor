@@ -117,6 +117,7 @@ html {
   padding: 2rem 2rem;
   /*height: 8rem;*/
   display: inline-block;
+  overflow: visible;
 }
 
 #search-box {
