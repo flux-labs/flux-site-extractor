@@ -236,11 +236,6 @@ function initMap() {
 
   var input = document.getElementById('search-box');
   var searchBox = new google.maps.places.SearchBox(input);
-  searchBox.addListener('places_changed', function() {
-    var places = searchBox.getPlaces();
-    events.push(['send', 'event', 'search', 'search'])
-  })
-
   var errorRectangle = {
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
@@ -257,11 +252,13 @@ function initMap() {
   }
   rectangle.setOptions(okRectangle);
   rectangle.addListener('bounds_changed', function() {
+    hideOpenLink()
     searchBox.setBounds(map.getBounds());
     if (checkRectangle(rectangle)) rectangle.setOptions(okRectangle);
     else rectangle.setOptions(errorRectangle);
   });
   searchBox.addListener('places_changed', function() {
+    hideOpenLink()
     var places = searchBox.getPlaces();
     if (places.length == 0) return;
     var bounds = new google.maps.LatLngBounds();
@@ -292,19 +289,10 @@ $(document).ready(function() {
     $send.attr('data-content', '').click(save);
     fillProjects(projects);
   }).catch(showLogin);
-  $('#random-min, #random-max, #contour-interval').click(function(e) {
-    e.stopPropagation()
-
-  });
+  $('#random-min, #random-max, #contour-interval').click(function(e) { e.stopPropagation() });
   $('.ui.checkbox').checkbox('set checked')
-  $('.ui.checkbox').click(function() {
-    if ($(this).hasClass('checked')) {
-      $(this).removeClass('checked');
-      $($(this).parent().children()[1]).addClass('disabled');
-    } else {
-      $(this).addClass('checked');
-      $($(this).parent().children()[1]).removeClass('disabled');
-    }
+  $('.ui.checkbox').click(function(e) {
+    hideOpenLink()
   })
 }); 
 

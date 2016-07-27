@@ -106,6 +106,9 @@ html {
   width: 100%;
   font-size: 1.5rem;
 }
+#actions.row {
+  position: relative;
+}
 
 #search.row {
   padding: 2rem;
@@ -211,6 +214,7 @@ html {
   border: 0;
   transition: background 0.5s;
   pointer-events: initial;
+  height: 2.5em;
 }
 
 #send.button:hover {
@@ -290,11 +294,13 @@ html {
   float: right;
   background: #0fbfd6;
   width: 100%;
-  padding: 1em;
-  font-size: 1.2em;
+  font-size: 1.8em;
   text-align: center;
   color: #fff;
   font-weight: bold;
+  height: 2.5em;
+  top: 0;
+  position: absolute;
 }
 
 .error .popup {

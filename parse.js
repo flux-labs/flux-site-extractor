@@ -69,7 +69,7 @@ function getOSM(data, options, topo) {
   function classifyWay(poly, dataWay) {
     let id = dataWay.$.id;
     let way = { primitive: 'polyline', points: [], units: { points: 'meters' } };
-    if (features.topography && topo) {
+    if ((features.topography || features.contours) && topo) {
       for (let j = 0, jl = poly.length; j < jl; j++) {
         let p = poly[j]
         let cLat = p.lat < y0 ? y0 : p.lat > y1 ? y1 : p.lat;
@@ -233,10 +233,9 @@ function getOSM(data, options, topo) {
   return out;
 }
 
-
 module.exports = function(data, options, cb) {
   var bounds = data.bounds;
-  var topo = options.features.topography ? new Tile({resolution: true, latMin: bounds.latMin, latMax: bounds.latMax, lonMin: bounds.lngMin, lonMax: bounds.lngMax}) : false
+  var topo = (options.features.topography || options.features.contours) ? new Tile({resolution: true, latMin: bounds.latMin, latMax: bounds.latMax, lonMin: bounds.lngMin, lonMax: bounds.lngMax}) : false
   if (!topo.data) topo = false
   var osm = getOSM(data, options, topo);
   if (osm) return cb(false, osm);
