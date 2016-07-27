@@ -256,6 +256,7 @@ module.exports = function(data, options, cb) {
   var bounds = data.bounds;
   var swKey = makeKey(bounds.latMin, bounds.lngMin);
   var neKey = makeKey(bounds.latMax, bounds.lngMax);
+  // if (features.topography && (config.downloadTiles || hasFile(swKey) && (swKey === neKey || !hasFile(neKey)))) {
   if (features.topography) {
     var topo = new Tile({resolution: true, latMin: bounds.latMin, latMax: bounds.latMax, lonMin: bounds.lngMin, lonMax: bounds.lngMax})
     var osm = getOSM(data, options, topo);

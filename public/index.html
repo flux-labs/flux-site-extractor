@@ -20,7 +20,7 @@
 				<h2>Site Extractor</h2>
 			</div>
 			<div id="controls">
-				<div class="row" id="description">Capture site context to use in your workflow.</div>
+				<div class="row" id="description">Capture site context to use in your workflow</div>
 				<div class="row" id="search">
 					<div class="ui huge icon input">
 					  <i class="search icon"></i>
@@ -31,57 +31,56 @@
 					    <div class="item">
 						    <div id="toggle-buildings" class="ui checkbox">
 								  <input type="checkbox" name="buildings">
-								  <label>Building profiles</label>
+								  <label>Building Profiles</label>
 								</div>
 							</div>
 					    <div class="item">
 						    <div id="toggle-buildings-3d" class="ui checkbox">
 								  <input type="checkbox" name="buildings-3d">
-								  <label>Building meshes (OSM height data)</label>
+								  <label>Building Meshes (using height data where available)</label>
 								</div>
 							</div>
 					    <div class="item">
 						    <div id="toggle-buildings-3d-random" class="ui checkbox">
 								  <input type="checkbox" name="buildings-3d">
-								  <label>Make building meshes from <input id="random-min" type="text" value="6"></input> to <input id="random-max" type="text" value="12"></input> meters</label>
+								  <label>Generate Other Buildings (from <input id="random-min" type="text" value="10"></input>m to <input id="random-max" type="text" value="20"></input>m)</label>
 								</div>
-						    <div class="disclaimer">Not all buildings have OSM height data</div>
 							</div>
 				    <div class="item">
 					    <div id="toggle-topography" class="ui checkbox">
 							  <input type="checkbox" name="topography">
-							  <label>Topography mesh</label>
+							  <label>Topographic Mesh</label>
 							</div>
 						</div>
 						<div class="items">
 					    <div class="item">
 						    <div id="toggle-contours" class="ui checkbox">
 								  <input type="checkbox" name="contours">
-								  <label>Topography lines every <input id="contour-interval" type="text" value="1"></1> meter(s)</label>
+								  <label>Contour Lines (every <input id="contour-interval" type="text" value="1"></1> m of elevation)</label>
 								</div>
 							</div>
 						</div>
 				    <div class="item">
 					    <div id="toggle-other" class="ui checkbox">
 							  <input type="checkbox" name="other">
-							  <label>Roads, parks and water features</label>
-						    <div class="disclaimer">All elements will be projected onto the topography.</div>
+							  <label>Roads, Parks & Water Features</label>
 							</div>
 						</div>
+				    <div class="disclaimer">Elements are projected onto topography when present.</div>
         </div>
 				<div class="row" id="login">
 					<button class="ui huge button">Log in to Flux</button>
 				</div>
 				<div class="row" id="projects">
-					<div class="ui huge selection dropdown" id="projectlist">
+					<div class="ui huge selection dropdown" id="projectlist" data-content="Select Project">
 					  <input type="hidden" name="project"></input>
 					  <i class="dropdown icon"></i>
 					  <div class="default text"></div>
 					  <div class="menu"></div>
 					</div>
-					<div id="open">Open project in Flux</div>
 				</div>
 				<button class="ui button" id="send">send to flux</button>
+				<div id="open">Open project in Flux</div>
 			</div>
 		</div>
 	</body>

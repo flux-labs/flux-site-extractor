@@ -61,20 +61,27 @@ class Tile {
           min: mapToPx(gt, [lon.lonMin, lat.latMax]),
           max: mapToPx(gt, [lon.lonMax, lat.latMin])
         }
-        let yDomain = f(px.max[0] - px.min[0])
-        let xDomain = f(px.max[1] - px.min[1])
-        if (lon.min) yDomain += this.pad
-        if (lon.max) yDomain += this.pad
-        if (lat.min) xDomain += this.pad
-        if (lat.max) xDomain += this.pad
+        let xDomain, yDomain
+        if (lon.min && lon.max) xDomain = this.lonSize + this.pad*2
+        else {
+          xDomain = f(px.max[0] - px.min[0])
+          if (lon.min) xDomain += this.pad
+          if (lon.max) xDomain += this.pad
+        }
+        if (lat.min && lat.max) yDomain = this.latSize + this.pad*2
+        else {
+          yDomain = f(px.max[1] - px.min[1])
+          if (lat.min) yDomain += this.pad
+          if (lat.max) yDomain += this.pad
+        }
         let n = Math.abs(xDomain * yDomain)
         let data = new Float32Array(new ArrayBuffer(n*4))
-        fileband.pixels.read(f(px.min[0]), f(px.min[1]), yDomain, xDomain, data)
+        fileband.pixels.read(f(px.min[0]), f(px.min[1]), xDomain, yDomain, data)
         let lonOffset = lon.lonOffset * size
         if (lon.max && !lon.min) lonOffset += this.pad
         let latOffset = lon.latOffset * size
         if (lat.max && !lat.min) latOffset += this.pad
-        this.band.pixels.write(lonOffset, latOffset, yDomain, xDomain, data);
+        this.band.pixels.write(lonOffset, latOffset, xDomain, yDomain, data);
         file.close()
       })
     })

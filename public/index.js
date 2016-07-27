@@ -2,7 +2,7 @@
 
 var offset = 0.005;
 let loading = false;
-let baseName = 'Site Project';
+let baseName = 'Flux Site Project';
 let rectangle;
 
 loadGoogleMaps(config.gmap);
@@ -141,15 +141,14 @@ function save() {
 
 function saveProject(data, pid, options) {
   let labels = {
-    contours: 'Topography Lines',
+    contours: 'Topographic Lines',
     building: 'Building Profiles',
-    building_3d: 'Buildings',
-    building_3d_random: 'Random Buildings',
+    building_3d: 'Buildings (OSM height data)',
+    building_3d_random: 'Buildings (randomized height)',
     highway: 'Roads',
-    topography: 'Topography Mesh',
+    topography: 'Topographic Mesh',
     leisure: 'Parks',
-    waterway: 'Water',
-    boundary: 'Boundaries'
+    waterway: 'Water'
   }
   var user = getUser();
   var project = user.getProject(pid);
@@ -177,6 +176,8 @@ function saveProject(data, pid, options) {
 
 function showOpenLink(url) {
   $('#open').fadeIn(0.25).on('click', function() {
+  // $('#open').addClass('visible').on('click', function() {
+    hideOpenLink()
     var win = window.open(url);
     if (win) win.focus();
   });
@@ -184,6 +185,7 @@ function showOpenLink(url) {
 
 function hideOpenLink() {
   $('#open').fadeOut(0.25).off();
+  // $('#open').removeClass('visible').off();
 }
 
 function initMap() {
@@ -247,6 +249,7 @@ function initMap() {
 }
 
 $(document).ready(function() {
+  $('#projectlist').popup({ position: 'top center' })
   var $send = $('#send');
   $send.on('mouseover', onHoverSend).popup({ position : 'bottom center' });
   checkLogin().then(function(projects) {
