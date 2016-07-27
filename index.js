@@ -3,10 +3,10 @@
 var fs = require('fs');
 var path = require('path');
 var express = require('express')
-let xml = require('xml2js').parseString;
-let bodyParser = require('body-parser');
+var xml = require('xml2js').parseString;
+var bodyParser = require('body-parser');
 var request = require('request');
-let parse = require('./parse');
+var parse = require('./parse');
 var https = require('https');
 var http = require('http');
 var config = require('./public/config');
@@ -22,7 +22,7 @@ app.set('view engine', 'html');
 app.use(bodyParser.json());
 
 function tryUrl(i, req, res, next) {
-  let coords = req.body.coordinates;
+  var coords = req.body.coordinates;
   if (!urls[i]) next(new Error('Could not reach data'))
   request({method: 'GET', timeout: 15000, url: urls[i] + '*[bbox=' + coords + ']'}, function(error, response, data) {
     if (error) {

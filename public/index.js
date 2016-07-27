@@ -1,13 +1,13 @@
 'use strict'
 
 var offset = 0.005;
-let loading = false;
-let baseName = 'Flux Site Project';
-let rectangle;
-let events = [];
-let sent = 0;
-let saved = 0;
-let time = new Date().getTime()
+var loading = false;
+var baseName = 'Flux Site Project';
+var rectangle;
+var events = [];
+var sent = 0;
+var saved = 0;
+var time = new Date().getTime()
 
 loadGoogleMaps(config.gmap);
 setFluxLogin();
@@ -64,9 +64,9 @@ function getCoords(rectangle) {
 }
 
 function checkRectangle(rectangle) {
-  let limit = 0.0003;
-  let coords = getCoords(rectangle);
-  let size = Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0])
+  var limit = 0.0003;
+  var coords = getCoords(rectangle);
+  var size = Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0])
   if (size > limit) {
     ga('send', 'event', 'resize', 'size', size)
     ga('send', 'event', 'resize', 'error', size)
@@ -81,7 +81,7 @@ function checkRectangle(rectangle) {
 function fillProjects(projects) {
   var hasBaseProject = false;
   $('#projectlist .menu').empty();
-  for (let p of projects.entities) {
+  for (var p of projects.entities) {
     if (p.name === baseName) hasBaseProject = true;
     $('#projectlist .menu').append('<div class="item" value="' + p.name + '" data-id="' + p.id + '">' + p.name + '</div>');
   }
@@ -97,7 +97,7 @@ function fillProjects(projects) {
 }
 
 function whichActive() {
-  let active = []
+  var active = []
   if ($('#toggle-buildings').hasClass('checked')) active.push(1)
   if ($('#toggle-buildings-3d').hasClass('checked')) active.push(2)
   if ($('#toggle-buildings-3d-random').hasClass('checked')) active.push(3)
@@ -153,7 +153,7 @@ function save() {
            .removeClass('loading')
            .attr('data-content', '');
       loading = false;
-      let pid = $('#projectlist .menu .item.selected').attr('data-id');
+      var pid = $('#projectlist .menu .item.selected').attr('data-id');
       if (pid === '0') {
         createProject(baseName).then(function(project) {
           $('#projectlist .menu .item.selected').attr('data-id', project.id);
@@ -167,7 +167,7 @@ function save() {
 }
 
 function saveProject(data, pid, options) {
-  let keys = {
+  var keys = {
     'Contour Lines': 'contours',
     'Building Profiles': 'building',
     'Buildings (accurate height)': 'building_3d',
@@ -181,7 +181,7 @@ function saveProject(data, pid, options) {
   var project = user.getProject(pid);
   var dt = project.getDataTable();
   saved++
-  let cells = dt.listCells().then(function(cells) {
+  var cells = dt.listCells().then(function(cells) {
     var update = {};
     cells.entities.map(function (cell) {
       if (keys[cell.description]) {
@@ -191,7 +191,7 @@ function saveProject(data, pid, options) {
     for (var k in keys) {
       if (options.features[keys[k]] && data[keys[k]]) {
         if (update[k]) {
-          let cell = createCell(pid, update[k].id);
+          var cell = createCell(pid, update[k].id);
           cell.update({value: data[keys[k]]});
         } else {
           dt.createCell(k, {description: k, value: data[keys[k]]});
@@ -243,14 +243,14 @@ function initMap() {
     events.push(['send', 'event', 'search', 'search'])
   })
 
-  let errorRectangle = {
+  var errorRectangle = {
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
     strokeWeight: 4,
     fillColor: '#FF0000',
     fillOpacity: 0.35,
   }
-  let okRectangle = {
+  var okRectangle = {
     strokeColor: '#000000',
     strokeOpacity: 0.8,
     strokeWeight: 3,
