@@ -255,22 +255,28 @@ html {
   background-color: #0fbfd6 !important;
 }
 
+.ui.toggle.checkbox input:checked ~ .box:after, .ui.toggle.checkbox input:checked ~ label:after {
+  left: 1.3rem; 
+}
 .ui.toggle.checkbox .box:after, .ui.toggle.checkbox label:after {
-  width: 2rem; 
-  height: 2rem; 
+  margin-top: 0.2em;
+  width: 1.5rem; 
+  height: 1.5rem; 
 }
 
 .ui.toggle.checkbox .box:before, .ui.toggle.checkbox label:before {
-  width: 4rem; 
-  height: 2rem; 
+  margin-top: 0.2em;
+  width: 2.8rem; 
+  height: 1.5rem; 
 }
 
 .ui.toggle.checkbox input {
-  height: 2rem; 
+  height: 1.5rem; 
 }
 
 .ui.toggle.checkbox .box, .ui.toggle.checkbox label {
-  min-height: 2rem;
+  min-height: 1.5rem;
+  padding-left: 3.5rem;
 }
 
 .ui.huge.search {
@@ -295,6 +301,7 @@ html {
   background: #0fbfd6;
   width: 100%;
   font-size: 1.8em;
+  text-transform: uppercase;
   text-align: center;
   color: #fff;
   font-weight: bold;
@@ -309,7 +316,7 @@ html {
 }
 
 #random-min, #random-max, #contour-interval {
-  width: 2em;
+  width: 1.8em;
   border: 0;
   border-bottom: 1px solid #ddd;
   text-align: center;
@@ -320,4 +327,10 @@ html {
   font-style: italic;
   /*margin-left: 2em;*/
   padding-top: 1em;
+}
+.ui.toggle.checkbox .box, .ui.toggle.checkbox label {
+  color: #aaa !important;
+}
+.ui.toggle.checkbox .box, .ui.toggle.checkbox.checked label {
+  color: #000;
 }
