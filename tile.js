@@ -60,12 +60,7 @@ class Tile {
       lonDomain.push({lonOffset: rounded.lonMax - lonMin, lonMin: rounded.lonMax, lonMax: lonMax, lonDomain: lonMax - rounded.lonMax, min: false, max: true})
     }
 
-    let size = 10812
-    this.latSize = f(size * this.latDomain)
-    this.lonSize = f(size * this.lonDomain)
-    this.ds = gdal.open('temp', 'w', 'MEM', this.lonSize + (this.pad*2), this.latSize + (this.pad*2), 1, gdal.GDT_CFloat32);
-    this.band = this.ds.bands.get(1);
-
+    let size
     for (var i = 0; i < latDomain.length; i++) {
       for (var j = 0; j < lonDomain.length; j++) {
         let lat = latDomain[i]
@@ -80,6 +75,13 @@ class Tile {
           }
         }
         let file = gdal.open(filename)
+        if (!size) {
+          size = file.rasterSize.x;
+          this.latSize = f(size * this.latDomain)
+          this.lonSize = f(size * this.lonDomain)
+          this.ds = gdal.open('temp', 'w', 'MEM', this.lonSize + (this.pad*2), this.latSize + (this.pad*2), 1, gdal.GDT_CFloat32);
+          this.band = this.ds.bands.get(1);
+        }
         let fileband = file.bands.get(1)
         let gt = file.geoTransform
         let px = {

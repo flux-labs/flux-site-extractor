@@ -91,7 +91,7 @@ function save() {
     var coords = getCoords(rectangle);
     var $send = $('#send');
     $send.addClass('loading')
-         .attr('data-content', 'this might take up to a minute')
+         .attr('data-content', 'this might take a minute')
          .popup('show');
     var other = $('#toggle-other').hasClass('checked')
     var save = {
