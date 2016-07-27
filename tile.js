@@ -180,7 +180,7 @@ class Tile {
           pt[2] - this.min
         ]
       })
-      contours.push({primitive: 'polyline', points: pts, attributes: {z: feature.fields.get('elev'), i: feature.fields.get('id')}})
+      contours.push({primitive: 'polyline', points: pts, units: {points: 'meters'}, attributes: {elevation: feature.fields.get('elev'), latitude: this.latMin, longitude: this.lonMin}})
     })
     return contours
   }

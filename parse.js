@@ -221,7 +221,8 @@ function getOSM(data, options, topo) {
       let mesh = {
         primitive: 'mesh',
         vertices: vertices,
-        faces: faces
+        faces: faces,
+        units: {vertices: 'meters'}
       }
       if (r) buildings_3d_random.push(mesh)
       else buildings_3d.push(mesh)

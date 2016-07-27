@@ -141,9 +141,9 @@ function save() {
 
 function saveProject(data, pid, options) {
   let keys = {
-    'Topographic Lines': 'contours',
+    'Contour Lines': 'contours',
     'Building Profiles': 'building',
-    'Buildings (OSM height data)': 'building_3d',
+    'Buildings (accurate height)': 'building_3d',
     'Buildings (randomized height)': 'building_3d_random',
     'Roads': 'highway',
     'Topographic Mesh': 'topography',
