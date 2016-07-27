@@ -4,6 +4,10 @@ var offset = 0.005;
 let loading = false;
 let baseName = 'Flux Site Project';
 let rectangle;
+let events = [];
+let sent = 0;
+let saved = 0;
+let time = new Date().getTime()
 
 loadGoogleMaps(config.gmap);
 setFluxLogin();
@@ -62,8 +66,16 @@ function getCoords(rectangle) {
 function checkRectangle(rectangle) {
   let limit = 0.0003;
   let coords = getCoords(rectangle);
-  if (Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0]) > limit) return false
-  else return true
+  let size = Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0])
+  if (size > limit) {
+    ga('send', 'event', 'resize', 'size', size)
+    ga('send', 'event', 'resize', 'error', size)
+    return false
+  }
+  else {
+    ga('send', 'event', 'resize', 'size', size)
+    return true
+  }
 }
 
 function fillProjects(projects) {
@@ -78,8 +90,23 @@ function fillProjects(projects) {
   }
   $('#projectlist .menu').attr("size", projects.entities.length+1);
   $('#projectlist').dropdown('set selected', baseName);
-  $('#projectlist').change(hideOpenLink);
+  $('#projectlist').change((e) => {
+    events.push(['send', 'event', 'changeProject', 'changeProject'])
+    hideOpenLink()
+  });
 }
+
+function whichActive() {
+  let active = []
+  if ($('#toggle-buildings').hasClass('checked')) active.push(1)
+  if ($('#toggle-buildings-3d').hasClass('checked')) active.push(2)
+  if ($('#toggle-buildings-3d-random').hasClass('checked')) active.push(3)
+  if ($('#toggle-topography').hasClass('checked')) active.push(4)
+  if ($('#toggle-contours').hasClass('checked')) active.push(5)
+  if ($('#toggle-other').hasClass('checked')) active.push(6)
+  return parseInt(active.join(''))
+}
+
 
 function save() {
   if (loading) return onError('Please wait');
@@ -153,6 +180,7 @@ function saveProject(data, pid, options) {
   var user = getUser();
   var project = user.getProject(pid);
   var dt = project.getDataTable();
+  saved++
   let cells = dt.listCells().then(function(cells) {
     var update = {};
     cells.entities.map(function (cell) {
@@ -176,6 +204,11 @@ function saveProject(data, pid, options) {
 
 function showOpenLink(url) {
   $('#open').fadeIn(0.25).on('click', function() {
+    ga('send', 'event', 'open', 'open')
+    ga('send', 'event', 'features', 'features', whichActive())
+    sent++
+    events.map((event) => { ga.apply(ga, event) })
+    events = []
     hideOpenLink()
     var win = window.open(url);
     if (win) win.focus();
@@ -205,6 +238,10 @@ function initMap() {
 
   var input = document.getElementById('search-box');
   var searchBox = new google.maps.places.SearchBox(input);
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+    events.push(['send', 'event', 'search', 'search'])
+  })
 
   let errorRectangle = {
     strokeColor: '#FF0000',
@@ -250,6 +287,7 @@ $(document).ready(function() {
   $('#projectlist').popup({ position: 'top center' })
   var $send = $('#send');
   $send.on('mouseover', onHoverSend).popup({ position : 'bottom center' });
+  ga('send', 'event', 'view', 'view')
   checkLogin().then(function(projects) {
     $('#login').hide();
     $('.ui.accordion').accordion()
@@ -271,4 +309,10 @@ $(document).ready(function() {
     }
   })
 }); 
+
+window.addEventListener('beforeunload', function(e) {
+  ga('send', 'event', 'sent', 'sent', sent)
+  ga('send', 'event', 'saved', 'saved', saved)
+  ga('send', 'event', 'time', 'time', (new Date().getTime() - time)/1000)
+})
 
