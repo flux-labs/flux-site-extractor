@@ -1,5 +1,3 @@
-'use strict'
-
 var offset = 0.005;
 var loading = false;
 var baseName = 'Flux Site Project';
