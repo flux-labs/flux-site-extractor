@@ -90,7 +90,7 @@ function fillProjects(projects) {
   }
   $('#projectlist .menu').attr("size", projects.entities.length+1);
   $('#projectlist').dropdown('set selected', baseName);
-  $('#projectlist').change((e) => {
+  $('#projectlist').change(function(e) {
     events.push(['send', 'event', 'changeProject', 'changeProject'])
     hideOpenLink()
   });
@@ -207,7 +207,7 @@ function showOpenLink(url) {
     ga('send', 'event', 'open', 'open')
     ga('send', 'event', 'features', 'features', whichActive())
     sent++
-    events.map((event) => { ga.apply(ga, event) })
+    events.map(function(event) { ga.apply(ga, event) })
     events = []
     hideOpenLink()
     var win = window.open(url);
