@@ -140,15 +140,15 @@ function save() {
 }
 
 function saveProject(data, pid, options) {
-  let labels = {
-    contours: 'Topographic Lines',
-    building: 'Building Profiles',
-    building_3d: 'Buildings (OSM height data)',
-    building_3d_random: 'Buildings (randomized height)',
-    highway: 'Roads',
-    topography: 'Topographic Mesh',
-    leisure: 'Parks',
-    waterway: 'Water'
+  let keys = {
+    'Topographic Lines': 'contours',
+    'Building Profiles': 'building',
+    'Buildings (OSM height data)': 'building_3d',
+    'Buildings (randomized height)': 'building_3d_random',
+    'Roads': 'highway',
+    'Topographic Mesh': 'topography',
+    'Parks': 'leisure',
+    'Water': 'waterway' 
   }
   var user = getUser();
   var project = user.getProject(pid);
@@ -156,27 +156,26 @@ function saveProject(data, pid, options) {
   let cells = dt.listCells().then(function(cells) {
     var update = {};
     cells.entities.map(function (cell) {
-      if (labels[cell.description] && labels[cell.description] === cell.label) {
+      if (keys[cell.description]) {
         update[cell.description] = cell;
       }
     });
-    for (var key in labels) {
-      if (options.features[key] && data[key]) {
-        if (update[key]) {
-          let cell = createCell(pid, update[key].id);
-          cell.update({value: data[key]});
+    for (var k in keys) {
+      if (options.features[keys[k]] && data[keys[k]]) {
+        if (update[k]) {
+          let cell = createCell(pid, update[k].id);
+          cell.update({value: data[keys[k]]});
         } else {
-          dt.createCell(labels[key], {description: key, value: data[key]});
+          dt.createCell(k, {description: k, value: data[keys[k]]});
         }
       }
     }
     showOpenLink(config.fluxUrl + '/p/' + pid + '/#!/data-view', '_blank');
-  });
+  })
 }
 
 function showOpenLink(url) {
   $('#open').fadeIn(0.25).on('click', function() {
-  // $('#open').addClass('visible').on('click', function() {
     hideOpenLink()
     var win = window.open(url);
     if (win) win.focus();
@@ -185,7 +184,6 @@ function showOpenLink(url) {
 
 function hideOpenLink() {
   $('#open').fadeOut(0.25).off();
-  // $('#open').removeClass('visible').off();
 }
 
 function initMap() {

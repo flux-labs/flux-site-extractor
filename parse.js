@@ -19,24 +19,6 @@ function measure(lat1, lng1, lat2, lng2) {
   return d * 1000; // meters
 }
 
-function leftPad(v, l) {
-  var r = v.toString();
-  while (r.length < l) { r = '0' + r };
-  return r;
-};
-
-function makeKey(lat, lng) {
-  return (lat < 0 ? 'S' : 'N') + 
-    (leftPad(Math.abs(Math.floor(lat)), 2)) +
-    (lng < 0 ? 'W' : 'E') +
-    (leftPad(Math.abs(Math.floor(lng)), 3));
-}
-
-function hasFile(name) {
-  try { if (fs.statSync('./data/' + name + '.hgt')) return true; } 
-  catch(e) { return false; }
-}
-
 function getOSM(data, options, topo) {
   let features = options.features
   let out = {}, nodes = {};
@@ -87,7 +69,7 @@ function getOSM(data, options, topo) {
   function classifyWay(poly, dataWay) {
     let id = dataWay.$.id;
     let way = { primitive: 'polyline', points: [], units: { points: 'meters' } };
-    if (features.topography) {
+    if (features.topography && topo) {
       for (let j = 0, jl = poly.length; j < jl; j++) {
         let p = poly[j]
         let cLat = p.lat < y0 ? y0 : p.lat > y1 ? y1 : p.lat;
@@ -252,20 +234,10 @@ function getOSM(data, options, topo) {
 
 
 module.exports = function(data, options, cb) {
-  var features = options.features
   var bounds = data.bounds;
-  var swKey = makeKey(bounds.latMin, bounds.lngMin);
-  var neKey = makeKey(bounds.latMax, bounds.lngMax);
-  // if (features.topography && (config.downloadTiles || hasFile(swKey) && (swKey === neKey || !hasFile(neKey)))) {
-  if (features.topography) {
-    var topo = new Tile({resolution: true, latMin: bounds.latMin, latMax: bounds.latMax, lonMin: bounds.lngMin, lonMax: bounds.lngMax})
-    var osm = getOSM(data, options, topo);
-    if (osm) return cb(false, osm);
-    else return cb('error with osm');
-  } else {
-    features.topography = false;
-    var osm = getOSM(data, options);
-    if (osm) return cb(false, osm);
-    else return cb('error with osm');
-  }
+  var topo = options.features.topography ? new Tile({resolution: true, latMin: bounds.latMin, latMax: bounds.latMax, lonMin: bounds.lngMin, lonMax: bounds.lngMax}) : false
+  if (!topo.data) topo = false
+  var osm = getOSM(data, options, topo);
+  if (osm) return cb(false, osm);
+  else return cb('error with osm');
 }

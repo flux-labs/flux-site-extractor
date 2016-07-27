@@ -1,3 +1,4 @@
+const fs = require('fs')
 const gdal = require('gdal')
 const f = (n) => Math.floor(n+0.0000001)
 const r = Math.round
@@ -10,6 +11,24 @@ const pxToMap = (gt, pos) => {
 const mapToPx = (gt, pos) => {
   return [(- (gt[0] - pos[0]) / gt[1]), (- (gt[3] - pos[1]) / gt[5])]
 }
+
+function makeKey(lat, lon) {
+  return (lat < 0 ? 's' : 'n') + 
+    (leftPad(Math.abs(c(lat)), 2)) +
+    (lon < 0 ? 'w' : 'e') +
+    (leftPad(Math.abs(f(lon)), 3));
+}
+
+function hasFile(file) {
+  try { if (fs.statSync(file)) return true; } 
+  catch(e) { return false; }
+}
+
+function leftPad(v, l) {
+  var r = v.toString();
+  while (r.length < l) { r = '0' + r };
+  return r;
+};
 
 class Tile {
   
@@ -47,13 +66,19 @@ class Tile {
     this.ds = gdal.open('temp', 'w', 'MEM', this.lonSize + (this.pad*2), this.latSize + (this.pad*2), 1, gdal.GDT_CFloat32);
     this.band = this.ds.bands.get(1);
 
-    latDomain.map((lat) => {
-      lonDomain.map((lon) => {
-        let latText = Math.abs(c(lat.latMin)) + ''
-        let lonText = Math.abs(f(lon.lonMin)) + ''
-        if (lonText.length === 2) lonText = '0' + lonText
-        let name = `n${latText}w${lonText}`
-        let filename = `./tiles/high/${name}.img`
+    for (var i = 0; i < latDomain.length; i++) {
+      for (var j = 0; j < lonDomain.length; j++) {
+        let lat = latDomain[i]
+        let lon = lonDomain[j]
+        var name = makeKey(lat.latMin, lon.lonMin)
+        let filename = './tiles/high/' + name + '.img'
+        if (!hasFile(filename)) {
+          filename = './tiles/low/' + name + '.img'
+          if (!hasFile(filename)) {
+            this.data = false
+            return
+          }
+        }
         let file = gdal.open(filename)
         let fileband = file.bands.get(1)
         let gt = file.geoTransform
@@ -83,8 +108,8 @@ class Tile {
         if (lat.max && !lat.min) latOffset += this.pad
         this.band.pixels.write(lonOffset, latOffset, xDomain, yDomain, data);
         file.close()
-      })
-    })
+      }
+    }
     let lonSize = this.lonSize + (this.pad*2)
     let latSize = this.latSize + (this.pad*2)
     let n = latSize * lonSize
