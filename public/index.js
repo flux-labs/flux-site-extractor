@@ -33,7 +33,6 @@ function onHoverSend() {
   if (error) {
     $('#send').addClass('disabled')
       .attr('data-content', error)
-      // .popup({position: 'bottom center'}).popup('show');
       .popup('show');
   } else {
     $('#send').removeClass('disabled').attr('data-content', '');
@@ -66,12 +65,12 @@ function checkRectangle(rectangle) {
   var coords = getCoords(rectangle);
   var size = Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0])
   if (size > limit) {
-    ga('send', 'event', 'resize', 'size', size)
-    ga('send', 'event', 'resize', 'error', size)
+    ga('send', 'event', 'features', 'resize', 'size', size)
+    ga('send', 'event', 'features', 'resize', 'error', size)
     return false
   }
   else {
-    ga('send', 'event', 'resize', 'size', size)
+    ga('send', 'event', 'features', 'resize', 'size', size)
     return true
   }
 }
@@ -96,13 +95,13 @@ function fillProjects(projects) {
 
 function whichActive() {
   var active = []
-  if ($('#toggle-buildings').hasClass('checked')) active.push(1)
-  if ($('#toggle-buildings-3d').hasClass('checked')) active.push(2)
-  if ($('#toggle-buildings-3d-random').hasClass('checked')) active.push(3)
-  if ($('#toggle-topography').hasClass('checked')) active.push(4)
-  if ($('#toggle-contours').hasClass('checked')) active.push(5)
-  if ($('#toggle-other').hasClass('checked')) active.push(6)
-  return parseInt(active.join(''))
+  if ($('#toggle-buildings').hasClass('checked')) active.push('profiles')
+  if ($('#toggle-buildings-3d').hasClass('checked')) active.push('buildings_3d')
+  if ($('#toggle-buildings-3d-random').hasClass('checked')) active.push('buildings_3d_random')
+  if ($('#toggle-topography').hasClass('checked')) active.push('topography_mesh')
+  if ($('#toggle-contours').hasClass('checked')) active.push('topography_contours')
+  if ($('#toggle-other').hasClass('checked')) active.push('other')
+  return active.join(', ')
 }
 
 
@@ -202,8 +201,8 @@ function saveProject(data, pid, options) {
 
 function showOpenLink(url) {
   $('#open').fadeIn(0.25).on('click', function() {
-    ga('send', 'event', 'open', 'open')
-    ga('send', 'event', 'features', 'features', whichActive())
+    ga('send', 'event', 'engagement', 'open')
+    ga('send', 'event', 'features', 'site', whichActive())
     sent++
     events.map(function(event) { ga.apply(ga, event) })
     events = []
@@ -262,6 +261,8 @@ function initMap() {
     var places = searchBox.getPlaces();
     if (places.length == 0) return;
     var bounds = new google.maps.LatLngBounds();
+    var place = places[0]
+    ga('send', 'event', 'features', 'search', place)
     places.forEach(function(place) {
       if (place.geometry.viewport) bounds.union(place.geometry.viewport);
       else bounds.extend(place.geometry.location);
@@ -282,7 +283,6 @@ $(document).ready(function() {
   $('#projectlist').popup({ position: 'top center' })
   var $send = $('#send');
   $send.on('mouseover', onHoverSend).popup({ position : 'bottom center' });
-  ga('send', 'event', 'view', 'view')
   checkLogin().then(function(projects) {
     $('#login').hide();
     $('.ui.accordion').accordion()
@@ -297,8 +297,8 @@ $(document).ready(function() {
 }); 
 
 window.addEventListener('beforeunload', function(e) {
-  ga('send', 'event', 'sent', 'sent', sent)
-  ga('send', 'event', 'saved', 'saved', saved)
-  ga('send', 'event', 'time', 'time', (new Date().getTime() - time)/1000)
+  ga('send', 'event', 'engagement', 'sent', 'sent', sent)
+  ga('send', 'event', 'engagement', 'saved', 'saved', saved)
+  ga('send', 'event', 'engagement', 'time', 'time', (new Date().getTime() - time)/1000)
 })
 
