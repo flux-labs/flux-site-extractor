@@ -156,7 +156,8 @@ class Tile {
   }
   
   contours(xDomain, yDomain, interval) {
-    interval = interval || 1
+    interval = parseInt(interval)
+    if (isNan(interval) || !interval) interval = 1
     let dst = gdal.open('temp', 'w', 'Memory');
     let lyr = dst.layers.create('temp', null, gdal.Linestring);
     lyr.fields.add(new gdal.FieldDefn('id', gdal.OFTInteger));
