@@ -215,6 +215,7 @@ html {
   transition: background 0.5s;
   pointer-events: initial;
   height: 2.5em;
+  border-radius: 0;
 }
 
 #send.button:hover {
@@ -295,19 +296,23 @@ html {
 }
 
 #open {
+  font-weight: 300;
   display: none;
   cursor: pointer;
   float: right;
   background: #0fbfd6;
   width: 100%;
   font-size: 1.8em;
-  text-transform: uppercase;
   text-align: center;
   color: #fff;
-  font-weight: bold;
   height: 2.5em;
   top: 0;
   position: absolute;
+  border-radius: 0;
+}
+
+#open:hover {
+  background: #12d0e5;
 }
 
 .error .popup {
