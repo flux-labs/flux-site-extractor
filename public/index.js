@@ -290,6 +290,9 @@ $(document).ready(function() {
     fillProjects(projects);
   }).catch(showLogin);
   $('#random-min, #random-max, #contour-interval').click(function(e) { e.stopPropagation() });
+  $('#random-min, #random-max, #contour-interval').keyup(function () { 
+    this.value = this.value.replace(/[^0-9\.]/g,'');
+  }); 
   $('.ui.checkbox').checkbox('set checked')
   $('.ui.checkbox').click(function(e) {
     hideOpenLink()

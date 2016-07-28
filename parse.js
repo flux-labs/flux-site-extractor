@@ -39,7 +39,7 @@ function getOSM(data, options, topo) {
   var latDomain = bounds.latMax - bounds.latMin;
   var lngDomain = bounds.lngMax - bounds.lngMin;
   if (features.topography && topo) out.topography = topo.mesh(xDomain, yDomain)
-  if (features.contours && topo) out.contours = topo.contours(xDomain, yDomain, options.contour_interval)
+  if (features.contours && topo) out.contours = topo.contours(xDomain, yDomain, options.contour_interval || 1)
 
   //** NODES
   let dataNodes = data.osm.node;
@@ -192,8 +192,8 @@ function getOSM(data, options, topo) {
       if (!building.attributes.height && !options.features.building_3d_random) return
       var height = building.attributes.height
       if (!height) {
-        var min = options.random_min
-        var max = options.random_max
+        var min = options.random_min || 10
+        var max = options.random_max || 20
         if (min > max) [min, max] = [max, min]
         height = (Math.random() * (max-min)) + min
         r = true
