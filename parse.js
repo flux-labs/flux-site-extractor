@@ -193,9 +193,9 @@ function getOSM(data, options, topo) {
       var height = building.attributes.height
       if (!height) {
         var min = parseFloat(options.random_min)
-        if (!min || isNan(min)) min = 10
+        if (!min || isNaN(min)) min = 10
         var max = parseFloat(options.random_max)
-        if (!max || isNan(max)) max = 20
+        if (!max || isNaN(max)) max = 20
         if (min > max) [min, max] = [max, min]
         height = (Math.random() * (max-min)) + min
         r = true
