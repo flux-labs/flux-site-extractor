@@ -89,7 +89,7 @@ function getOSM(data, options, topo) {
       for (let j = 0, jl = dataWay.tag.length; j < jl; j++) {
         let tag = dataWay.tag[j].$.k;
         let value = dataWay.tag[j].$.v;
-        if (features[tag] || tag === 'natural') {
+        if (features[tag] || tag === 'natural' || tag === 'building') {
           way.type = tag;
           switch (tag) {
             case 'highway':
@@ -183,13 +183,13 @@ function getOSM(data, options, topo) {
     })
   }
 
-  if (options.features.building_3d) {
+  if (features.building_3d || features.building_3d_random) {
     var buildings_3d = []
     var buildings_3d_random = []
     out.building.map((building) => {
       // get lowest point of building profile
       var r = false
-      if (!building.attributes.height && !options.features.building_3d_random) return
+      if (!building.attributes.height && !features.building_3d_random) return
       var height = building.attributes.height
       if (!height) {
         var min = parseFloat(options.random_min)
@@ -232,6 +232,7 @@ function getOSM(data, options, topo) {
     if (buildings_3d.length) out.building_3d = buildings_3d
     if (buildings_3d_random.length) out.building_3d_random = buildings_3d_random
   }
+  if (!features.building) delete out.building
   return out;
 }
 
