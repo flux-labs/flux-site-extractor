@@ -13,3 +13,4 @@ config.js
 dev
 ssl
 TODO
+.DS_Store
