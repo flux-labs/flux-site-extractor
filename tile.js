@@ -19,6 +19,14 @@ function makeKey(lat, lon) {
     (leftPad(Math.abs(f(lon)), 3));
 }
 
+function makeTifKey(lat, lon) {
+  return (lat < 0 ? 's' : 'n') + 
+    (leftPad(Math.abs(f(lat)), 2)) +
+    (lon < 0 ? 'w' : 'e') +
+    (leftPad(Math.abs(f(lon)), 3));
+}
+
+
 function hasFile(file) {
   try { if (fs.statSync(file)) return true; } 
   catch(e) { return false; }
@@ -70,8 +78,11 @@ class Tile {
         if (!hasFile(filename)) {
           filename = './tiles/low/' + name + '.img'
           if (!hasFile(filename)) {
-            this.data = false
-            return
+            filename = './tiles/low/' + makeTifKey(lat.latMin, lon.lonMin) + '.tif'
+            if (!hasFile(filename)) {
+              this.data = false
+              return
+            }
           }
         }
         let file = gdal.open(filename)
