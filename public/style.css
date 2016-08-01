@@ -340,9 +340,6 @@ html {
   color: #000;
 }
 
-/*.help.icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.info.icon {
+  font-size: 1.2em;
 }
-*/
