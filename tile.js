@@ -68,7 +68,7 @@ class Tile {
       lonDomain.push({lonOffset: rounded.lonMax - lonMin, lonMin: rounded.lonMax, lonMax: lonMax, lonDomain: lonMax - rounded.lonMax, min: false, max: true})
     }
 
-    let size
+    let sizeX, sizeY
     for (var i = 0; i < latDomain.length; i++) {
       for (var j = 0; j < lonDomain.length; j++) {
         let lat = latDomain[i]
@@ -86,10 +86,11 @@ class Tile {
           }
         }
         let file = gdal.open(filename)
-        if (!size) {
-          size = file.rasterSize.x;
-          this.latSize = f(size * this.latDomain)
-          this.lonSize = f(size * this.lonDomain)
+        if (!sizeX) {
+          sizeX = file.rasterSize.x;
+          sizeY = file.rasterSize.y;
+          this.latSize = f(sizeY * this.latDomain)
+          this.lonSize = f(sizeX * this.lonDomain)
           this.ds = gdal.open('temp', 'w', 'MEM', this.lonSize + (this.pad*2), this.latSize + (this.pad*2), 1, gdal.GDT_CFloat32);
           this.band = this.ds.bands.get(1);
         }
@@ -115,9 +116,9 @@ class Tile {
         let n = Math.abs(xDomain * yDomain)
         let data = new Float32Array(new ArrayBuffer(n*4))
         fileband.pixels.read(f(px.min[0]), f(px.min[1]), xDomain, yDomain, data)
-        let lonOffset = lon.lonOffset * size
+        let lonOffset = lon.lonOffset * sizeX
         if (lon.max && !lon.min) lonOffset += this.pad
-        let latOffset = lon.latOffset * size
+        let latOffset = lon.latOffset * sizeY
         if (lat.max && !lat.min) latOffset += this.pad
         this.band.pixels.write(lonOffset, latOffset, xDomain, yDomain, data);
         file.close()
