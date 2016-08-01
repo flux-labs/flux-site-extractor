@@ -294,6 +294,7 @@ $(document).ready(function() {
     this.value = this.value.replace(/[^0-9\.]/g,'');
   }); 
   $('.ui.checkbox').checkbox('set checked')
+  $('.info.circle.icon').popup({ position: 'bottom left' })
   $('.ui.checkbox').click(function(e) {
     hideOpenLink()
   })

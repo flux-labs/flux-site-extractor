@@ -339,3 +339,10 @@ html {
 .ui.toggle.checkbox .box, .ui.toggle.checkbox.checked label {
   color: #000;
 }
+
+/*.help.icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+*/
