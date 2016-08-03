@@ -33,6 +33,32 @@ html {
   font-size: 14px;
 }
 
+@media only screen  and (min-width : 321px) {
+  html {
+    font-size: 11px;
+  }
+}
+
+@media only screen  and (max-width : 1223px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media only screen  and (min-width : 1224px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Large screens ----------- */
+@media only screen  and (min-width : 1824px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+
 #container.ui.container {
   border-radius: 4px;
   box-shadow: 0 1px 8px 1px #bbb;
@@ -158,7 +184,7 @@ html {
 
 #datatable.row {
   border-bottom: 1px solid #e8e8e8;
-  padding: 2rem 2rem 2rem;
+  padding: 2rem 2rem 1rem;
 }
 #datatable .column {
   width: 50%;
@@ -182,16 +208,12 @@ html {
   margin: 0;
   padding: 0;
   text-transform: uppercase;
-  line-height: 1.2em;
+  /*line-height: 1.2rem;*/
 }
 
 #header h2 {
   font-weight: 300;
   font-size: 1.8rem;
-}
-
-#send {
-  text-transform: uppercase;
 }
 
 .item {
@@ -208,18 +230,25 @@ html {
 #send.button {
   width: 100%;
   font-size: 1.8rem;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   font-weight: 300;
   background: #f9f9f9;
   border: 0;
   transition: background 0.5s;
   pointer-events: initial;
-  height: 2.5em;
   border-radius: 0;
 }
 
 #send.button:hover {
   background: #f0f0f0;
+}
+
+#send.blue {
+  background-color: #0fbfd6;
+}
+
+#send.button.blue:hover {
+  background: #12d0e5;
 }
 
 .item h4 {
@@ -230,6 +259,8 @@ html {
 #project {
   background-color: #0fbfd6;
 }
+
+/*
 
 #login {
   padding: 2rem;
@@ -242,6 +273,7 @@ html {
   width: 100%;
   color: white;
 }
+*/
 
 .ui.huge.input {
   float: right;
@@ -260,13 +292,13 @@ html {
   left: 1.3rem; 
 }
 .ui.toggle.checkbox .box:after, .ui.toggle.checkbox label:after {
-  margin-top: 0.2em;
+  margin-top: 0.2rem;
   width: 1.5rem; 
   height: 1.5rem; 
 }
 
 .ui.toggle.checkbox .box:before, .ui.toggle.checkbox label:before {
-  margin-top: 0.2em;
+  margin-top: 0.2rem;
   width: 2.8rem; 
   height: 1.5rem; 
 }
@@ -302,10 +334,10 @@ html {
   float: right;
   background: #0fbfd6;
   width: 100%;
-  font-size: 1.8em;
+  font-size: 1.8rem;
   text-align: center;
   color: #fff;
-  height: 2.5em;
+  /*height: 2.5rem;*/
   top: 0;
   position: absolute;
   border-radius: 0;
@@ -321,7 +353,7 @@ html {
 }
 
 #random-min, #random-max, #contour-interval {
-  width: 1.8em;
+  width: 1.8rem;
   border: 0;
   border-bottom: 1px solid #ddd;
   text-align: center;
@@ -330,8 +362,8 @@ html {
 .disclaimer {
   color: #aaa;
   font-style: italic;
-  /*margin-left: 2em;*/
-  padding-top: 1em;
+  /*margin-left: 2rem;*/
+  padding-top: 1rem;
 }
 .ui.toggle.checkbox .box, .ui.toggle.checkbox label {
   color: #aaa !important;
@@ -341,5 +373,11 @@ html {
 }
 
 .info.icon {
-  font-size: 1.2em;
+  font-size: 1.2rem;
+  top: -1.2rem;
+  position: relative;
+}
+
+.ui.popup {
+  font-size: 1.2rem;
 }

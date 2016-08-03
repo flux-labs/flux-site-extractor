@@ -48,10 +48,11 @@ function checkLogin() {
 
 function showLogin(err) {
   localStorage.removeItem('fluxCredentials');
-  $('#login').show();
+  // $('#login').show();
   $('#projects').hide();
-  $('#send').addClass('disabled').attr('data-content', 'Please log in');
-  $('#login button').on('click', getFluxLogin);
+  // $('#send').addClass('disabled').attr('data-content', 'Please log in');
+  $('#send').html('Log in to Flux').addClass('blue').on('click', getFluxLogin)
+  // $('#login button').on('click', getFluxLogin);
 }
 
 function getCoords(rectangle) {
