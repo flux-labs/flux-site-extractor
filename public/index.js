@@ -66,12 +66,12 @@ function checkRectangle(rectangle) {
   var coords = getCoords(rectangle);
   var size = Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0])
   if (size > limit) {
-    ga('send', 'event', 'features', 'resize', 'size', size)
-    ga('send', 'event', 'features', 'resize', 'error', size)
+    analytics.track('Labs - Extractor - Resize', {value: size})
+    analytics.track('Labs - Extractor - Resize Error', {value: size})
     return false
   }
   else {
-    ga('send', 'event', 'features', 'resize', 'size', size)
+    analytics.track('Labs - Extractor - Resize', {value: size})
     return true
   }
 }
@@ -89,7 +89,8 @@ function fillProjects(projects) {
   $('#projectlist .menu').attr("size", projects.entities.length+1);
   $('#projectlist').dropdown('set selected', baseName);
   $('#projectlist').change(function(e) {
-    events.push(['send', 'event', 'changeProject', 'changeProject'])
+    // events.push(['send', 'event', 'changeProject', 'changeProject'])
+    events.push(['Labs - Extractor - Change Project'])
     hideOpenLink()
   });
 }
@@ -202,10 +203,10 @@ function saveProject(data, pid, options) {
 
 function showOpenLink(url) {
   $('#open').fadeIn(0.25).on('click', function() {
-    ga('send', 'event', 'engagement', 'open')
-    ga('send', 'event', 'features', 'site', whichActive())
+    analytics.track('Labs - Extractor - Open')
+    analytics.track('Labs - Extractor - Features', {value: whichActive})
     sent++
-    events.map(function(event) { ga.apply(ga, event) })
+    events.map(function(event) { analytics.track.apply(analytics, event) })
     events = []
     hideOpenLink()
     var win = window.open(url);
@@ -263,7 +264,7 @@ function initMap() {
     if (places.length == 0) return;
     var bounds = new google.maps.LatLngBounds();
     var place = places[0]
-    ga('send', 'event', 'features', 'search', place)
+    analytics.track('Labs - Extractor - Search', {value: place})
     places.forEach(function(place) {
       if (place.geometry.viewport) bounds.union(place.geometry.viewport);
       else bounds.extend(place.geometry.location);
@@ -302,8 +303,8 @@ $(document).ready(function() {
 }); 
 
 window.addEventListener('beforeunload', function(e) {
-  ga('send', 'event', 'engagement', 'sent', 'sent', sent)
-  ga('send', 'event', 'engagement', 'saved', 'saved', saved)
-  ga('send', 'event', 'engagement', 'time', 'time', (new Date().getTime() - time)/1000)
+  analytics.track('Labs - Extractor - Sent', {value: sent})
+  analytics.track('Labs - Extractor - Saved', {value: saved})
+  analytics.track('Labs - Extractor - Time', {value: (new Date().getTime() - time)/1000})
 })
 
