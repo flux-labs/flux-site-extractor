@@ -66,12 +66,12 @@ function checkRectangle(rectangle) {
   var coords = getCoords(rectangle);
   var size = Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0])
   if (size > limit) {
-    analytics.track('Labs - Extractor - Resize', {value: size})
-    analytics.track('Labs - Extractor - Resize Error', {value: size})
+    // analytics.track('Labs - Extractor - Resize', {value: size})
+    // analytics.track('Labs - Extractor - Resize Error', {value: size})
     return false
   }
   else {
-    analytics.track('Labs - Extractor - Resize', {value: size})
+    // analytics.track('Labs - Extractor - Resize', {value: size})
     return true
   }
 }
