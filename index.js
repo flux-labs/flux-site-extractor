@@ -55,11 +55,11 @@ app.use(function(err, req, res, next) {
   res.render('error', { message: err.message, error: {} });
 });
 
-var httpsOptions = {
-  key: fs.readFileSync(config.sslKey),
-  cert: fs.readFileSync(config.sslCert),
-  ca: fs.readFileSync(config.sslCA)
-}
+// var httpsOptions = {
+//   key: fs.readFileSync(config.sslKey),
+//   cert: fs.readFileSync(config.sslCert),
+//   ca: fs.readFileSync(config.sslCA)
+// }
 
 http.createServer(app).listen(config.port);
-https.createServer(httpsOptions, app).listen(config.portSSL);
+// https.createServer(httpsOptions, app).listen(config.portSSL);

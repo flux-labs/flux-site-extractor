@@ -64,7 +64,9 @@ function getCoords(rectangle) {
 function checkRectangle(rectangle) {
   var limit = 0.0003;
   var coords = getCoords(rectangle);
+  console.log(coords);
   var size = Math.abs(coords[3] - coords[1]) * Math.abs(coords[2] - coords[0])
+  console.log(size);
   if (size > limit) {
     // analytics.track('Labs - Extractor - Resize', {value: size})
     // analytics.track('Labs - Extractor - Resize Error', {value: size})
